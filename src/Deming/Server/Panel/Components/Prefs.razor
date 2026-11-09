@@ -1,0 +1,11 @@
+<div class="prefs">
+    <nav class="seg" aria-label="@L["Language"]">
+        <a href="@CultureLink("en")" lang="en" aria-current="@(Culture == "en" ? "true" : null)">EN</a>
+        <a href="@CultureLink("tr")" lang="tr" aria-current="@(Culture == "tr" ? "true" : null)">TR</a>
+    </nav>
+    <nav class="seg" aria-label="@L["Theme"]">
+        <a href="@ThemeLink("light")" title="@L["ThemeLight"]" aria-label="@L["ThemeLight"]" aria-current="@(Theme == "light" ? "true" : null)"><Icon Name="sun" /></a>
+        <a href="@ThemeLink("system")" title="@L["ThemeSystem"]" aria-label="@L["ThemeSystem"]" aria-current="@(Theme == "system" ? "true" : null)"><Icon Name="system" /></a>
+        <a href="@ThemeLink("dark")" title="@L["ThemeDark"]" aria-label="@L["ThemeDark"]" aria-current="@(Theme == "dark" ? "true" : null)"><Icon Name="moon" /></a>
+    </nav>
+</div>

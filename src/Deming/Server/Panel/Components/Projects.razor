@@ -1,0 +1,69 @@
+@page "/"
+@page "/projects"
+@inherits PanelPage
+
+<PageTitle>@L["Projects"] · Deming</PageTitle>
+<Shell>
+    <header class="page-head">
+        <h1>@L["Projects"]</h1>
+    </header>
+
+    @if (OkText is { } ok) { <p class="notice ok" role="status">@ok</p> }
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+
+    <section class="card card-flush" aria-label="@L["Projects"]">
+        @if (_projects.Count == 0)
+        {
+            <div class="empty-state">
+                <Icon Name="empty" />
+                <p>@L["NoProjects"]</p>
+            </div>
+        }
+        else
+        {
+            <table class="projects">
+                <thead>
+                    <tr>
+                        <th aria-sort="@AriaSort("id")"><a class="sort" href="@SortUrl("id")" title="@L["SortBy", L["Id"]]">ID @if (Sort == "id") { <Icon Name="@(Descending ? "sort-down" : "sort-up")" /> }</a></th>
+                        <th aria-sort="@AriaSort("name")"><a class="sort" href="@SortUrl("name")" title="@L["SortBy", L["Project"]]">@L["Project"] @if (Sort == "name") { <Icon Name="@(Descending ? "sort-down" : "sort-up")" /> }</a></th>
+                        <th>@L["RepoPath"]</th>
+                        <th>@L["ProjectState"]</th>
+                        <th>@L["WorkColumn"]</th>
+                        <th><span class="sr-only">@L["Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in _projects)
+                    {
+                        <tr class="@(p.IsActive ? null : "inactive")">
+                            <td class="num">@p.Id</td>
+                            <td class="title">
+                                <a href="/tasks?project=@p.Id">@p.Name</a>
+                                @if (!string.IsNullOrWhiteSpace(p.Description)) { <div class="text">@p.Description</div> }
+                            </td>
+                            <td class="repo">@if (p.RepoPath is { } repo) { <span class="path">@repo</span> }</td>
+                            <td><span class="badge @(p.IsActive ? "active" : "cancelled")">@(p.IsActive ? L["Active"] : L["Inactive"])</span></td>
+                            <td class="progress">
+                                <span class="soft">@L["ProjectTasksCount", p.DoneTasks, p.TotalTasks]</span>
+                                @if (p.QueuedTasks > 0) { <span class="pill">@L["ProjectQueuedCount", p.QueuedTasks]</span> }
+                            </td>
+                            <td class="actions">
+                                <a class="icon-btn" href="/tasks?project=@p.Id" title="@L["ProjectTasksOf", p.Name]" aria-label="@L["ProjectTasksOf", p.Name]"><Icon Name="list" /></a>
+                                <a class="icon-btn" href="/projects/@p.Id/edit" title="@L["ProjectEditOf", p.Name]" aria-label="@L["ProjectEditOf", p.Name]"><Icon Name="edit" /></a>
+                                <form method="post" class="inline" @formname="@("toggle-" + p.Id)" @onsubmit="OnPostAsync">
+                                    <AntiforgeryToken />
+                                    <input type="hidden" name="id" value="@p.Id" />
+                                    <input type="hidden" name="active" value="@(p.IsActive ? "0" : "1")" />
+                                    @{ var toggle = p.IsActive ? L["ProjectDeactivate", p.Name] : L["ProjectActivate", p.Name]; }
+                                    <button class="icon-btn" title="@toggle" aria-label="@toggle"><Icon Name="@(p.IsActive ? "pause" : "play")" /></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+
+    <p class="buttons"><a class="btn" href="/projects/new"><Icon Name="plus" /> @L["AddProject"]</a></p>
+</Shell>

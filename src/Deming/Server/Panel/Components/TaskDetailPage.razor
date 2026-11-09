@@ -1,0 +1,175 @@
+@page "/tasks/{TaskId:long}"
+@inherits PanelPage
+
+@if (_detail is null || _project is null)
+{
+    <PageTitle>@L["NotFound"] · Deming</PageTitle>
+    <Shell><p class="notice error" role="alert">@L["Err_NotFound"]</p></Shell>
+    return;
+}
+
+@{ var task = _detail.Task; }
+<PageTitle>#@task.Id @task.Title · Deming</PageTitle>
+<Shell>
+    <header class="page-head">
+        <nav class="crumbs" aria-label="@L["Breadcrumb"]">
+            <a href="/tasks">@L["Tasks"]</a>
+            <span aria-hidden="true">/</span>
+            <a href="/tasks?project=@task.ProjectId">@_project.Name</a>
+        </nav>
+        <h1><span class="task-id">#@task.Id</span>@task.Title</h1>
+    </header>
+
+    @if (OkText is { } ok) { <p class="notice ok" role="status">@ok</p> }
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+
+    <div class="detail-grid">
+        <div>
+            <section class="card">
+                <h2>@L["Scope"]</h2>
+                <div class="card-body">
+                    @if (string.IsNullOrWhiteSpace(task.Scope)) { <p class="empty">@L["NoScope"]</p> }
+                    else { <pre class="prose">@task.Scope</pre> }
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>@L["Dependencies"]</h2>
+                <div class="card-body">
+                    @if (_detail.Dependencies.Count == 0) { <p class="empty">@L["NoDependencies"]</p> }
+                    else
+                    {
+                        <ul class="deps">
+                            @foreach (var d in _detail.Dependencies)
+                            {
+                                <li><span class="badge @d.Status">@StatusLabel(d.Status)</span> <a href="/tasks/@d.Id">#@d.Id @d.Title</a></li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </section>
+
+            <h2>@L["Notes"]</h2>
+            @if (_detail.Notes.Count == 0) { <p class="empty">@L["NoNotes"]</p> }
+            else
+            {
+                <div class="timeline">
+                    @foreach (var n in _detail.Notes)
+                    {
+                        <article class="note @n.Kind">
+                            <header>
+                                <strong>@L["Kind_" + n.Kind]</strong>
+                                <span>@Stamp(n.CreatedAt)</span>
+                                @if (n.SessionId is not null) { <span class="session">@n.SessionId</span> }
+                                @if (n.CommitHash is not null) { <code>@n.CommitHash</code> }
+                            </header>
+                            <div class="body">
+                                <p>@n.Summary</p>
+                                @if (n.Caveats is not null) { <p><strong>@L["Caveats"]:</strong> @n.Caveats</p> }
+                                @if (n.TouchedFiles is not null) { <p><strong>@L["TouchedFiles"]:</strong> <span class="files">@n.TouchedFiles</span></p> }
+                                @if (n.TakenOverFrom is not null) { <p><small>@L["TakenOverFrom", n.TakenOverFrom]</small></p> }
+                            </div>
+                        </article>
+                    }
+                </div>
+            }
+
+            @if (task.Status is not (TaskItemStatus.Done or TaskItemStatus.Cancelled))
+            {
+                <section class="card">
+                    <h2>@L["EditTask"]</h2>
+                    <div class="card-body">
+                        <form method="post" class="stack" @formname="save" @onsubmit="OnPostAsync">
+                            <AntiforgeryToken />
+                            <input type="hidden" name="op" value="save" />
+                            <label>@L["Title"] <input name="title" value="@(_title ?? task.Title)" required /></label>
+                            <label>@L["Scope"] <textarea name="scope" rows="8">@(_scope ?? task.Scope)</textarea></label>
+                            <label>
+                                @L["Priority"]
+                                <select name="priority">
+                                    @foreach (var p in new[] { TaskPriority.High, TaskPriority.Default, TaskPriority.Low })
+                                    {
+                                        <option value="@p" selected="@(p == (_priority ?? task.Priority))">@PriorityLabel(p)</option>
+                                    }
+                                </select>
+                            </label>
+                            <fieldset>
+                                <legend>@L["DependsOn"]</legend>
+                                @if (_candidates.Count == 0) { <p class="empty">@L["NoOtherTasks"]</p> }
+                                @foreach (var c in _candidates)
+                                {
+                                    <label class="check">
+                                        <input type="checkbox" name="dependsOn" value="@c.Id" checked="@(_selected.Contains(c.Id))" />
+                                        <span>#@c.Id @c.Title</span> <span class="badge @c.Status">@StatusLabel(c.Status)</span>
+                                    </label>
+                                }
+                            </fieldset>
+                            <p><button>@L["Save"]</button></p>
+                        </form>
+                    </div>
+                </section>
+            }
+        </div>
+
+        <aside>
+            <section class="card">
+                <h2>@L["Details"]</h2>
+                <div class="card-body">
+                    <dl class="facts">
+                        <dt>@L["Status"]</dt>
+                        <dd><span class="badge @task.Status">@StatusLabel(task.Status)</span></dd>
+                        <dt>@L["Priority"]</dt>
+                        <dd><Prio Priority="task.Priority" Label="@PriorityLabel(task.Priority)" /></dd>
+                        <dt>@L["Source"]</dt>
+                        <dd>@L["Source_" + task.Source]</dd>
+                        <dt>@L["Created"]</dt>
+                        <dd>@Stamp(task.CreatedAt)</dd>
+                        @if (task.StartedAt is not null) { <dt>@L["Started"]</dt><dd>@Stamp(task.StartedAt)</dd> }
+                        @if (task.FinishedAt is not null) { <dt>@L["Finished"]</dt><dd>@Stamp(task.FinishedAt)</dd> }
+                        @if (task.LockOwner is not null)
+                        {
+                            <dt>@L["LockOwner"]</dt>
+                            <dd>
+                                <span class="session">@task.LockOwner</span>
+                                <div><small>@L["LockedAt", Stamp(task.LockedAt)]</small></div>
+                                @if (LockExpired(task.LockedAt)) { <div><small>@L["LockExpired"]</small></div> }
+                            </dd>
+                        }
+                        @if (task.AddedBySession is not null) { <dt>@L["AddedBy"]</dt><dd><span class="session">@task.AddedBySession</span></dd> }
+                        @if (task.BlockedReason is not null) { <dt>@L["BlockedReason"]</dt><dd>@task.BlockedReason</dd> }
+                        @if (task.CancelledReason is not null) { <dt>@L["CancelledReason"]</dt><dd>@task.CancelledReason</dd> }
+                    </dl>
+                </div>
+            </section>
+
+            @if (task.Status is TaskItemStatus.Done or TaskItemStatus.Cancelled)
+            {
+                <p class="notice">@L["FinishedReadOnly"]</p>
+            }
+            else
+            {
+                <section class="card">
+                    <h2>@L["Actions"]</h2>
+                    <div class="card-body">
+                        @if (task.Status is TaskItemStatus.InProgress or TaskItemStatus.Blocked)
+                        {
+                            <form method="post" class="stack" @formname="release" @onsubmit="OnPostAsync">
+                                <AntiforgeryToken />
+                                <input type="hidden" name="op" value="release" />
+                                <p><button class="secondary">@(task.Status == TaskItemStatus.Blocked ? L["Requeue"] : L["ReleaseLock"])</button></p>
+                            </form>
+                            <hr />
+                        }
+                        <form method="post" class="stack" @formname="cancel" @onsubmit="OnPostAsync">
+                            <AntiforgeryToken />
+                            <input type="hidden" name="op" value="cancel" />
+                            <label>@L["Reason"] <input name="reason" required maxlength="@NoteLimits.SummaryMax" /></label>
+                            <p><button class="danger">@L["CancelTask"]</button></p>
+                        </form>
+                        <p><small>@L["NoManualStart"]</small></p>
+                    </div>
+                </section>
+            }
+        </aside>
+    </div>
+</Shell>

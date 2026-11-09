@@ -1,0 +1,6 @@
+{
+  "Source": "Server/Panel/Styles/panel.scss",
+  "Target": "Server/Panel/Assets/panel.css",
+  "Arguments": "--style=compressed --no-source-map --no-error-css",
+  "GenerateScopedCss": false
+}

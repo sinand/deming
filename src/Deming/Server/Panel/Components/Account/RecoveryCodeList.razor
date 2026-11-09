@@ -1,0 +1,13 @@
+<section class="card" id="recovery-codes">
+    <h2>@L["RecoveryCodesTitle"]</h2>
+    <div class="card-body">
+        <p class="notice warn" role="status">@L["RecoveryCodesSave"]</p>
+        <ul class="codes">
+            @foreach (var item in Codes)
+            {
+                <li><code>@item</code></li>
+            }
+        </ul>
+        <p><a class="btn secondary" href="/account">@L["Account"]</a></p>
+    </div>
+</section>

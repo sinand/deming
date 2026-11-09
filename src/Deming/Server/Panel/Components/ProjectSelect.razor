@@ -1,0 +1,18 @@
+<select name="@Name">
+    @if (Filter)
+    {
+        <option value="" selected="@(Value == "")">@L["ActiveProjects"]</option>
+        <option value="@ScopedPage.AllProjects" selected="@(Value == ScopedPage.AllProjects)">@L["AllProjects"]</option>
+        @foreach (var p in Projects)
+        {
+            <option value="@p.Id" selected="@(Value == p.Id.ToString())">@p.Name@(p.IsActive ? null : " · " + L["Inactive"])</option>
+        }
+    }
+    else
+    {
+        @foreach (var p in Projects.Where(p => p.IsActive))
+        {
+            <option value="@p.Id" selected="@(Value == p.Id.ToString())">@p.Name</option>
+        }
+    }
+</select>

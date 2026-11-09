@@ -1,0 +1,44 @@
+@page "/account"
+@inherits AccountPage
+
+<PageTitle>@L["Account"] · Deming</PageTitle>
+<Shell Narrow="true">
+    <header class="page-head">
+        <h1>@L["Account"]</h1>
+    </header>
+    @if (OkText is { } ok) { <p class="notice ok" role="status">@ok</p> }
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+
+    @if (_owner is { } owner)
+    {
+        <p class="lead">@L["SignedInAs", owner.UserName]</p>
+
+        <section class="card">
+            <h2>@L["TwoFactorTitle"]</h2>
+            <div class="card-body state">
+                <p><span class="badge @(owner.TwoFactorEnabled ? "done" : "queued")">@(owner.TwoFactorEnabled ? L["TwoFactorStatusOn"] : L["TwoFactorStatusOff"])</span></p>
+                <p>
+                    @if (owner.TwoFactorEnabled) { <a class="btn secondary" href="/account/2fa">@L["ManageTwoFactor"]</a> }
+                    else { <a class="btn" href="/account/2fa/enable">@L["SetUpAuthenticator"]</a> }
+                </p>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>@L["ChangePassword"]</h2>
+            <div class="card-body">
+                <form method="post" class="stack" @formname="password" @onsubmit="OnPostAsync">
+                    <AntiforgeryToken />
+                    <input type="hidden" autocomplete="username" name="username" value="@owner.UserName" />
+                    <label>@L["CurrentPassword"] <input name="current" type="password" autocomplete="current-password" required /></label>
+                    <label>
+                        @L["NewPassword"] <input name="password" type="password" autocomplete="new-password" required />
+                        <small>@L["PasswordHint", Users.Options.Password.RequiredLength]</small>
+                    </label>
+                    <label>@L["RepeatPassword"] <input name="confirm" type="password" autocomplete="new-password" required /></label>
+                    <p><button>@L["ChangePassword"]</button></p>
+                </form>
+            </div>
+        </section>
+    }
+</Shell>

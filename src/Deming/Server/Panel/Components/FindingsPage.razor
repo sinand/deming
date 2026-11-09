@@ -1,0 +1,113 @@
+@page "/findings"
+@inherits ScopedPage
+
+@if (_notFound)
+{
+    <PageTitle>@L["NotFound"] · Deming</PageTitle>
+    <Shell><p class="notice error" role="alert">@L["Err_NotFound"]</p></Shell>
+    return;
+}
+
+<PageTitle>@L["Findings"] · Deming</PageTitle>
+<Shell>
+    <header class="page-head">
+        <h1>@L["Findings"]</h1>
+    </header>
+
+    @if (OkText is { } ok) { <p class="notice ok" role="status">@ok</p> }
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+
+    @if (_selected is { } sel)
+    {
+        <section class="card reading" id="finding">
+            <div class="card-body">
+                <div class="state">
+                    <h2><span class="task-id">#@sel.Id</span>@sel.Title</h2>
+                </div>
+                @* The body is markdown; MarkdownView renders it with raw HTML disabled and only http(s) links. *@
+                <div class="prose markdown">@MarkdownView.Render(sel.Body)</div>
+                <p class="meta">
+                    @if (_selectedProject is not null) { <a href="@Link("/findings", ("project", sel.ProjectId.ToString()))">@_selectedProject</a> }
+                    <span>@Stamp(sel.CreatedAt)</span>
+                    @if (sel.SessionId is not null) { <span class="session">@sel.SessionId</span> }
+                    @if (sel.TaskId is { } tid) { <a href="/tasks/@tid">@L["TaskRef", tid]</a> }
+                    @if (sel.DecisionId is { } did) { <a href="@Link("/decisions", ("view", did.ToString()), ("project", sel.ProjectId.ToString()))#decision">@L["DecisionRef", did]</a> }
+                </p>
+            </div>
+        </section>
+    }
+
+    <div class="split">
+        <section class="card card-flush" aria-label="@L["Findings"]">
+            <form method="get" class="toolbar">
+                <label>@L["Project"] <ProjectSelect Name="project" Projects="Projects" Value="@ProjectValue" Filter="true" /></label>
+                <button class="secondary">@L["Filter"]</button>
+                @if (ProjectValue != "") { <a href="/findings">@L["ClearFilter"]</a> }
+            </form>
+
+            @if (_items.Count == 0)
+            {
+                <div class="empty-state">
+                    <Icon Name="empty" />
+                    <p>@L["NoFindings"]</p>
+                </div>
+            }
+            else
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>@L["Title"]</th>
+                            @if (Selected is null) { <th>@L["Project"]</th> }
+                            <th>@L["Created"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var f in _items)
+                        {
+                            <tr class="@(f.Id == View ? "selected" : null) @(f.ProjectIsActive ? null : "inactive")">
+                                <td class="num">@f.Id</td>
+                                <td class="title">
+                                    <a href="@ViewLink(f.Id)">@f.Title</a>
+                                    <div class="text">@L["BodyLength", f.BodyLength]</div>
+                                </td>
+                                @if (Selected is null)
+                                {
+                                    <td><a href="@Link("/findings", ("project", f.ProjectId.ToString()))">@f.ProjectName</a></td>
+                                }
+                                <td class="date"><small>@Stamp(f.CreatedAt)</small></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </section>
+
+        @if (Selected is null || Selected.IsActive)
+        {
+            <section class="card">
+                <h2>@L["NewFinding"]</h2>
+                <div class="card-body">
+                    <form method="post" class="stack" @formname="add" @onsubmit="OnPostAsync">
+                        <AntiforgeryToken />
+                        @if (Selected is { } fixedProject)
+                        {
+                            <input type="hidden" name="projectId" value="@fixedProject.Id" />
+                            <p class="meta"><span>@L["Project"]:</span> <strong>@fixedProject.Name</strong></p>
+                        }
+                        else
+                        {
+                            <label>@L["Project"] <ProjectSelect Name="projectId" Projects="Projects" Value="@(_formProject?.ToString() ?? "")" /></label>
+                        }
+                        <label>@L["Title"] <input name="title" value="@_title" required maxlength="@NoteLimits.FindingTitleMax" /></label>
+                        <label>@L["FindingBody"] <textarea name="body" rows="8" required maxlength="@NoteLimits.FindingBodyMax">@_body</textarea></label>
+                        <label>@L["TaskOptional"] <input name="taskId" value="@_taskId" inputmode="numeric" pattern="[0-9]*" /></label>
+                        <label>@L["DecisionOptional"] <input name="decisionId" value="@_decisionId" inputmode="numeric" pattern="[0-9]*" /></label>
+                        <p><button>@L["AddFinding"]</button></p>
+                    </form>
+                </div>
+            </section>
+        }
+    </div>
+</Shell>

@@ -1,0 +1,9 @@
+@page "/lockout"
+@inherits AccountPage
+
+<PageTitle>@L["LockoutTitle"] · Deming</PageTitle>
+<Shell SignedIn="false" Narrow="true">
+    <h1>@L["LockoutTitle"]</h1>
+    <p class="notice error" role="alert">@L["LockoutText", Minutes]</p>
+    <p class="auth-links"><a href="/login">@L["BackToSignIn"]</a></p>
+</Shell>

@@ -1,0 +1,78 @@
+@page "/account/2fa"
+@inherits AccountPage
+
+<PageTitle>@L["TwoFactorTitle"] · Deming</PageTitle>
+<Shell Narrow="true">
+    <header class="page-head">
+        <nav class="crumbs" aria-label="@L["Breadcrumb"]"><a href="/account">@L["Account"]</a></nav>
+        <h1>@L["TwoFactorTitle"]</h1>
+    </header>
+    @if (OkText is { } ok) { <p class="notice ok" role="status">@ok</p> }
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+
+    @if (_codes is { } codes)
+    {
+        <RecoveryCodeList Codes="codes" />
+    }
+    else if (_owner is { TwoFactorEnabled: false })
+    {
+        <section class="card">
+            <div class="card-body state">
+                <p><span class="badge queued">@L["TwoFactorStatusOff"]</span></p>
+                <p><a class="btn" href="/account/2fa/enable">@L["SetUpAuthenticator"]</a></p>
+            </div>
+        </section>
+    }
+    else if (_owner is not null)
+    {
+        <section class="card">
+            <div class="card-body state">
+                <p><span class="badge done">@L["TwoFactorStatusOn"]</span></p>
+                <p>@L["RecoveryCodesLeft", _codesLeft]</p>
+            </div>
+        </section>
+        @if (_codesLeft <= 3) { <p class="notice warn" role="alert">@L["RecoveryCodesLow"]</p> }
+
+        <section class="card">
+            <h2>@L["RecoveryCodesTitle"]</h2>
+            <div class="card-body">
+                <p><small>@L["GenerateCodesHint"]</small></p>
+                <div class="buttons">
+                    <form method="post" @formname="codes" @onsubmit="GenerateCodesAsync">
+                        <AntiforgeryToken />
+                        <button class="secondary">@L["GenerateCodes"]</button>
+                    </form>
+                    @if (_browserRemembered)
+                    {
+                        <form method="post" @formname="forget" @onsubmit="ForgetBrowserAsync">
+                            <AntiforgeryToken />
+                            <button class="secondary">@L["ForgetBrowser"]</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <section class="card danger-zone">
+            <h2>@L["DisableTwoFactor"]</h2>
+            <div class="card-body">
+                <p><small>@L["DisableTwoFactorHint"]</small></p>
+                <form method="post" @formname="disable" @onsubmit="DisableAsync">
+                    <AntiforgeryToken />
+                    <p><button class="danger">@L["DisableTwoFactor"]</button></p>
+                </form>
+            </div>
+        </section>
+
+        <section class="card danger-zone">
+            <h2>@L["ResetAuthenticator"]</h2>
+            <div class="card-body">
+                <p><small>@L["ResetAuthenticatorHint"]</small></p>
+                <form method="post" @formname="reset" @onsubmit="ResetAsync">
+                    <AntiforgeryToken />
+                    <p><button class="danger">@L["ResetAuthenticator"]</button></p>
+                </form>
+            </div>
+        </section>
+    }
+</Shell>

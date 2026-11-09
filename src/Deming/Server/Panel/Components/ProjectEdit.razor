@@ -1,0 +1,43 @@
+@page "/projects/new"
+@page "/projects/{ProjectId:long}/edit"
+@inherits PanelPage
+
+@if (!IsNew && _project is null)
+{
+    <PageTitle>@L["NotFound"] · Deming</PageTitle>
+    <Shell><p class="notice error" role="alert">@L["Err_NotFound"]</p></Shell>
+    return;
+}
+
+<PageTitle>@(IsNew ? L["AddProject"] : L["ProjectEditOf", _project!.Name]) · Deming</PageTitle>
+<Shell>
+    <header class="page-head">
+        <nav class="crumbs" aria-label="@L["Breadcrumb"]">
+            <a href="/projects">@L["Projects"]</a>
+            <span aria-hidden="true">/</span>
+            <span>@(IsNew ? L["NewProject"] : _project!.Name)</span>
+        </nav>
+        <h1>@(IsNew ? L["NewProject"] : L["EditProject"])</h1>
+    </header>
+
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+
+    <section class="card">
+        <div class="card-body">
+            <form method="post" class="stack" @formname="project" @onsubmit="OnPostAsync">
+                <AntiforgeryToken />
+                <label>@L["Name"] <input name="name" value="@_name" required maxlength="200" /></label>
+                <label>@L["RepoPath"] <input name="repoPath" value="@_repoPath" class="path" maxlength="500" /><small>@L["RepoPathHint"]</small></label>
+                <label>@L["Description"] <textarea name="description" rows="3">@_description</textarea></label>
+                @if (!IsNew)
+                {
+                    <label class="check"><input type="checkbox" name="active" value="1" checked="@_active" /> @L["ActiveCheck"]</label>
+                }
+                <p class="buttons">
+                    <button>@(IsNew ? L["Create"] : L["Save"])</button>
+                    <a class="btn secondary" href="/projects">@L["Cancel"]</a>
+                </p>
+            </form>
+        </div>
+    </section>
+</Shell>

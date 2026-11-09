@@ -1,0 +1,17 @@
+@page "/login/2fa"
+@inherits AccountPage
+
+<PageTitle>@L["TwoFactorTitle"] · Deming</PageTitle>
+<Shell SignedIn="false" Narrow="true">
+    <h1>@L["TwoFactorTitle"]</h1>
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+    <p>@L["TwoFactorPrompt"]</p>
+
+    <form method="post" class="stack" @formname="2fa" @onsubmit="OnPostAsync">
+        <AntiforgeryToken />
+        <label>@L["AuthenticatorCode"] <input name="code" autocomplete="one-time-code" inputmode="numeric" maxlength="7" required autofocus /></label>
+        <label class="check"><input type="checkbox" name="rememberMachine" value="true" /> @L["RememberMachine"]</label>
+        <p><button>@L["Verify"]</button></p>
+    </form>
+    <p class="auth-links"><a href="@RecoveryLink">@L["UseRecoveryCode"]</a></p>
+</Shell>

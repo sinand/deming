@@ -1,0 +1,44 @@
+<a class="skip" href="#main">@L["SkipToContent"]</a>
+@if (SignedIn)
+{
+    <div class="app">
+        <aside class="side">
+            <a class="brand" href="/">Deming</a>
+            <nav class="side-nav" aria-label="@L["MainNavigation"]">
+                <a href="/tasks" aria-current="@(Section == "tasks" ? "page" : null)"><Icon Name="list" /> @L["Tasks"]</a>
+                <a href="/projects" aria-current="@(Section == "projects" ? "page" : null)"><Icon Name="projects" /> @L["Projects"]</a>
+                <a href="/decisions" aria-current="@(Section == "decisions" ? "page" : null)"><Icon Name="decision" /> @L["Decisions"]</a>
+                <a href="/findings" aria-current="@(Section == "findings" ? "page" : null)"><Icon Name="finding" /> @L["Findings"]</a>
+                <a href="/account" aria-current="@(Section == "account" ? "page" : null)"><Icon Name="account" /> @L["Account"]</a>
+            </nav>
+        </aside>
+        <div class="frame">
+            <header class="topbar">
+                <Prefs />
+                @if (UserName is { } name)
+                {
+                    <span class="who"><span class="avatar" aria-hidden="true">@Initial</span><strong>@name</strong></span>
+                }
+                <form method="post" action="/logout" class="inline">
+                    <AntiforgeryToken />
+                    <button class="secondary small"><Icon Name="signout" /> @L["SignOut"]</button>
+                </form>
+            </header>
+            <main id="main" class="content@(Narrow ? " narrow" : null)">
+                @ChildContent
+            </main>
+        </div>
+    </div>
+}
+else
+{
+    <div class="auth">
+        <a class="brand" href="/">Deming</a>
+        <main id="main" class="auth-card">
+            @ChildContent
+        </main>
+        <footer class="auth-foot">
+            <Prefs />
+        </footer>
+    </div>
+}

@@ -1,0 +1,20 @@
+@page "/register"
+@inherits AccountPage
+
+<PageTitle>@L["CreateOwner"] · Deming</PageTitle>
+<Shell SignedIn="false" Narrow="true">
+    <h1>@L["CreateOwner"]</h1>
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+
+    <form method="post" class="stack" @formname="register" @onsubmit="OnPostAsync">
+        <AntiforgeryToken />
+        <label>@L["UserName"] <input name="username" autocomplete="username" value="@_userName" required /></label>
+        <label>
+            @L["Password"] <input name="password" type="password" autocomplete="new-password" required />
+            <small>@L["PasswordHint", Users.Options.Password.RequiredLength]</small>
+        </label>
+        <label>@L["RepeatPassword"] <input name="confirm" type="password" autocomplete="new-password" required /></label>
+        <TurnstileWidget />
+        <p><button>@L["CreateAccount"]</button></p>
+    </form>
+</Shell>

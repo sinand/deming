@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- gezinme ve ortak -->
+  <data name="Projects" xml:space="preserve"><value>Projeler</value></data>
+  <data name="Tasks" xml:space="preserve"><value>İş Maddeleri</value></data>
+  <data name="Decisions" xml:space="preserve"><value>Kararlar</value></data>
+  <data name="Language" xml:space="preserve"><value>Dil</value></data>
+  <data name="SignOut" xml:space="preserve"><value>Çıkış yap</value></data>
+  <data name="NotFound" xml:space="preserve"><value>Bulunamadı</value></data>
+  <data name="Name" xml:space="preserve"><value>Ad</value></data>
+  <data name="Description" xml:space="preserve"><value>Açıklama</value></data>
+  <data name="Created" xml:space="preserve"><value>Oluşturulma</value></data>
+  <data name="Create" xml:space="preserve"><value>Oluştur</value></data>
+  <data name="Title" xml:space="preserve"><value>Başlık</value></data>
+  <data name="Status" xml:space="preserve"><value>Durum</value></data>
+  <data name="Priority" xml:space="preserve"><value>Öncelik</value></data>
+  <data name="Source" xml:space="preserve"><value>Kaynak</value></data>
+  <data name="Scope" xml:space="preserve"><value>Kapsam</value></data>
+  <data name="Reason" xml:space="preserve"><value>Sebep</value></data>
+  <data name="Edit" xml:space="preserve"><value>Düzenle</value></data>
+  <data name="Save" xml:space="preserve"><value>Kaydet</value></data>
+  <data name="Cancel" xml:space="preserve"><value>İptal et</value></data>
+  <data name="Search" xml:space="preserve"><value>Ara</value></data>
+  <data name="Filter" xml:space="preserve"><value>Süz</value></data>
+  <data name="ClearFilter" xml:space="preserve"><value>Süzgeci temizle</value></data>
+  <data name="AllStatuses" xml:space="preserve"><value>Tüm durumlar</value></data>
+  <data name="StatusFilter_eligible" xml:space="preserve"><value>Alınabilir (paralel)</value></data>
+
+  <!-- projeler -->
+  <data name="NoProjects" xml:space="preserve"><value>Henüz proje yok. İlkini aşağıdan ya da CLI ile oluşturun.</value></data>
+  <data name="NewProject" xml:space="preserve"><value>Yeni proje</value></data>
+  <data name="Project" xml:space="preserve"><value>Proje</value></data>
+  <data name="RepoPath" xml:space="preserve"><value>Repo yolu</value></data>
+  <data name="RepoPathHint" xml:space="preserve"><value>Deponun bulunduğu yol. Bilgi amaçlıdır; proje yine .deming dosyasındaki adıyla tanınır.</value></data>
+  <data name="ProjectState" xml:space="preserve"><value>Durum</value></data>
+  <data name="Active" xml:space="preserve"><value>Aktif</value></data>
+  <data name="Inactive" xml:space="preserve"><value>Pasif</value></data>
+  <data name="ActiveCheck" xml:space="preserve"><value>Aktif (pasif proje madde vermez ve yeni madde almaz)</value></data>
+  <data name="ProjectTasksCount" xml:space="preserve"><value>{0} / {1} bitti</value></data>
+  <data name="ProjectQueuedCount" xml:space="preserve"><value>{0} sırada</value></data>
+  <data name="WorkColumn" xml:space="preserve"><value>İşler</value></data>
+  <data name="Id" xml:space="preserve"><value>ID</value></data>
+  <data name="AddProject" xml:space="preserve"><value>Proje Ekle</value></data>
+  <data name="EditProject" xml:space="preserve"><value>Projeyi düzenle</value></data>
+  <data name="ProjectTasksOf" xml:space="preserve"><value>{0} maddeleri</value></data>
+  <data name="ProjectEditOf" xml:space="preserve"><value>{0} projesini düzenle</value></data>
+  <data name="ProjectDeactivate" xml:space="preserve"><value>{0} projesini pasife al</value></data>
+  <data name="ProjectActivate" xml:space="preserve"><value>{0} projesini aktife al</value></data>
+  <data name="SortBy" xml:space="preserve"><value>{0} sütununa göre sırala</value></data>
+  <data name="BackToProjects" xml:space="preserve"><value>Projelere dön</value></data>
+
+  <!-- maddeler -->
+  <data name="NoTasks" xml:space="preserve"><value>Eşleşen madde yok.</value></data>
+  <data name="WaitingFor" xml:space="preserve"><value>Bekledikleri</value></data>
+  <data name="LockOwner" xml:space="preserve"><value>Kilit sahibi</value></data>
+  <data name="LockExpired" xml:space="preserve"><value>süresi doldu</value></data>
+  <data name="LockedAt" xml:space="preserve"><value>{0} tarihinden beri</value></data>
+  <data name="Requeue" xml:space="preserve"><value>Kuyruğa geri al</value></data>
+  <data name="ReleaseLock" xml:space="preserve"><value>Kilidi bırak</value></data>
+  <data name="CancelTask" xml:space="preserve"><value>Maddeyi iptal et</value></data>
+  <data name="NewTask" xml:space="preserve"><value>Yeni madde</value></data>
+  <data name="AddTask" xml:space="preserve"><value>Madde ekle</value></data>
+  <data name="DependsOn" xml:space="preserve"><value>Beklediği maddeler</value></data>
+  <data name="Started" xml:space="preserve"><value>Başlangıç</value></data>
+  <data name="Finished" xml:space="preserve"><value>Bitiş</value></data>
+  <data name="AddedBy" xml:space="preserve"><value>Ekleyen oturum</value></data>
+  <data name="BlockedReason" xml:space="preserve"><value>Bloke sebebi</value></data>
+  <data name="CancelledReason" xml:space="preserve"><value>İptal sebebi</value></data>
+  <data name="NoScope" xml:space="preserve"><value>Kapsam yazılmamış.</value></data>
+  <data name="Dependencies" xml:space="preserve"><value>Bağımlılıklar</value></data>
+  <data name="NoDependencies" xml:space="preserve"><value>Hiçbir şeyi beklemiyor.</value></data>
+  <data name="FinishedReadOnly" xml:space="preserve"><value>Bu madde bitti; artık düzenlenemez.</value></data>
+  <data name="EditTask" xml:space="preserve"><value>Maddeyi düzenle</value></data>
+  <data name="NoOtherTasks" xml:space="preserve"><value>Projede başka madde yok.</value></data>
+  <data name="Actions" xml:space="preserve"><value>İşlemler</value></data>
+  <data name="NoManualStart" xml:space="preserve"><value>Bir madde buradan "yapılıyor" durumuna alınamaz: ajan oturumu onu next ya da take ile alır.</value></data>
+  <data name="Notes" xml:space="preserve"><value>Notlar</value></data>
+  <data name="NoNotes" xml:space="preserve"><value>Henüz not yok.</value></data>
+  <data name="Caveats" xml:space="preserve"><value>Dikkat edilecekler</value></data>
+  <data name="TouchedFiles" xml:space="preserve"><value>Dokunulan dosyalar</value></data>
+  <data name="TakenOverFrom" xml:space="preserve"><value>{0} oturumundan devralınarak kapatıldı.</value></data>
+  <data name="Kind_handoff" xml:space="preserve"><value>Devir notu</value></data>
+  <data name="Kind_note" xml:space="preserve"><value>Not</value></data>
+  <data name="Status_queued" xml:space="preserve"><value>Kuyrukta</value></data>
+  <data name="Status_in_progress" xml:space="preserve"><value>Yapılıyor</value></data>
+  <data name="Status_done" xml:space="preserve"><value>Bitti</value></data>
+  <data name="Status_blocked" xml:space="preserve"><value>Bloke</value></data>
+  <data name="Status_cancelled" xml:space="preserve"><value>İptal</value></data>
+  <data name="Priority_1" xml:space="preserve"><value>Yüksek</value></data>
+  <data name="Priority_2" xml:space="preserve"><value>Normal</value></data>
+  <data name="Priority_3" xml:space="preserve"><value>Düşük</value></data>
+  <data name="Source_human" xml:space="preserve"><value>İnsan</value></data>
+  <data name="Source_agent" xml:space="preserve"><value>Ajan</value></data>
+
+  <!-- kararlar -->
+  <data name="NoDecisions" xml:space="preserve"><value>Kayıtlı karar yok.</value></data>
+  <data name="DecisionStatus_active" xml:space="preserve"><value>Geçerli</value></data>
+  <data name="DecisionStatus_superseded" xml:space="preserve"><value>Yerine geçildi</value></data>
+  <data name="SupersededBy" xml:space="preserve"><value>yerine #{0} geçti</value></data>
+  <data name="Rationale" xml:space="preserve"><value>Gerekçe</value></data>
+  <data name="NoRationale" xml:space="preserve"><value>Gerekçe yazılmamış.</value></data>
+  <data name="TaskRef" xml:space="preserve"><value>madde #{0}</value></data>
+  <data name="Supersede" xml:space="preserve"><value>Düzelt ya da yerine geç</value></data>
+  <data name="SupersedeHint" xml:space="preserve"><value>Bir karar asla düzenlenmez ya da silinmez. Düzeltilmiş hâlini yazmak yeni bir karar kaydeder ve bunu "yerine geçildi" olarak işaretler.</value></data>
+  <data name="SupersedeButton" xml:space="preserve"><value>Yerine geçeni kaydet</value></data>
+  <data name="DecisionText" xml:space="preserve"><value>Karar</value></data>
+  <data name="NewDecision" xml:space="preserve"><value>Yeni karar</value></data>
+  <data name="TaskOptional" xml:space="preserve"><value>Madde numarası (isteğe bağlı)</value></data>
+  <data name="AddDecision" xml:space="preserve"><value>Kararı kaydet</value></data>
+
+  <!-- giriş ve kayıt -->
+  <data name="SignIn" xml:space="preserve"><value>Giriş yap</value></data>
+  <data name="CreateOwner" xml:space="preserve"><value>Sahip hesabını oluştur</value></data>
+  <data name="CreateAccount" xml:space="preserve"><value>Hesap oluştur</value></data>
+  <data name="UserName" xml:space="preserve"><value>Kullanıcı adı</value></data>
+  <data name="Password" xml:space="preserve"><value>Parola</value></data>
+  <data name="RepeatPassword" xml:space="preserve"><value>Parolayı tekrarlayın</value></data>
+  <data name="RememberMe" xml:space="preserve"><value>Oturumum açık kalsın</value></data>
+  <data name="PasswordHint" xml:space="preserve"><value>En az {0} karakter.</value></data>
+  <data name="TwoFactorTitle" xml:space="preserve"><value>İki adımlı giriş</value></data>
+  <data name="TwoFactorPrompt" xml:space="preserve"><value>Doğrulama uygulamanızdaki 6 haneli kodu girin.</value></data>
+  <data name="AuthenticatorCode" xml:space="preserve"><value>Doğrulama kodu</value></data>
+  <data name="RememberMachine" xml:space="preserve"><value>Bu tarayıcıda tekrar sorma</value></data>
+  <data name="Verify" xml:space="preserve"><value>Doğrula</value></data>
+  <data name="UseRecoveryCode" xml:space="preserve"><value>Uygulamaya erişemiyor musunuz? Kurtarma koduyla giriş yapın.</value></data>
+  <data name="RecoveryTitle" xml:space="preserve"><value>Kurtarma koduyla giriş</value></data>
+  <data name="RecoveryPrompt" xml:space="preserve"><value>Her kurtarma kodu bir kez kullanılır.</value></data>
+  <data name="RecoveryCode" xml:space="preserve"><value>Kurtarma kodu</value></data>
+  <data name="LockoutTitle" xml:space="preserve"><value>Hesap kilitlendi</value></data>
+  <data name="LockoutText" xml:space="preserve"><value>Çok fazla hatalı deneme yapıldı. Hesap {0} dakika kilitli; daha sonra tekrar deneyin.</value></data>
+  <data name="BackToSignIn" xml:space="preserve"><value>Girişe dön</value></data>
+
+  <!-- hesap -->
+  <data name="Account" xml:space="preserve"><value>Hesap</value></data>
+  <data name="SignedInAs" xml:space="preserve"><value>{0} olarak giriş yapıldı.</value></data>
+  <data name="ChangePassword" xml:space="preserve"><value>Parolayı değiştir</value></data>
+  <data name="CurrentPassword" xml:space="preserve"><value>Mevcut parola</value></data>
+  <data name="NewPassword" xml:space="preserve"><value>Yeni parola</value></data>
+  <data name="TwoFactorStatusOn" xml:space="preserve"><value>İki adımlı giriş açık.</value></data>
+  <data name="TwoFactorStatusOff" xml:space="preserve"><value>İki adımlı giriş kapalı.</value></data>
+  <data name="ManageTwoFactor" xml:space="preserve"><value>İki adımlı girişi yönet</value></data>
+  <data name="SetUpAuthenticator" xml:space="preserve"><value>Doğrulama uygulaması kur</value></data>
+  <data name="RecoveryCodesLeft" xml:space="preserve"><value>Kalan kurtarma kodu: {0}.</value></data>
+  <data name="RecoveryCodesLow" xml:space="preserve"><value>Az kurtarma kodu kaldı. Yenilerini üretin.</value></data>
+  <data name="RecoveryCodesTitle" xml:space="preserve"><value>Kurtarma kodları</value></data>
+  <data name="RecoveryCodesSave" xml:space="preserve"><value>Bu kodları güvenli bir yerde saklayın. Her biri uygulama olmadan bir kez giriş sağlar; tekrar gösterilmez.</value></data>
+  <data name="GenerateCodes" xml:space="preserve"><value>Yeni kurtarma kodları üret</value></data>
+  <data name="GenerateCodesHint" xml:space="preserve"><value>Eski kodlar geçersiz olur.</value></data>
+  <data name="ForgetBrowser" xml:space="preserve"><value>Bu tarayıcıda kodu yeniden sor</value></data>
+  <data name="DisableTwoFactor" xml:space="preserve"><value>İki adımlı girişi kapat</value></data>
+  <data name="DisableTwoFactorHint" xml:space="preserve"><value>Giriş yalnızca parolayı soracak.</value></data>
+  <data name="ResetAuthenticator" xml:space="preserve"><value>Doğrulama anahtarını sıfırla</value></data>
+  <data name="ResetAuthenticatorHint" xml:space="preserve"><value>Uygulamadaki kayıt çalışmaz olur; yeniden kurana kadar iki adımlı giriş kapanır.</value></data>
+  <data name="EnableStep1" xml:space="preserve"><value>Deming'i bir doğrulama uygulamasına ekleyin (ör. Microsoft Authenticator, Google Authenticator ya da 1Password). Uygulamayla bu QR kodunu okutun:</value></data>
+  <data name="EnableQrLabel" xml:space="preserve"><value>Doğrulama uygulaması için QR kodu</value></data>
+  <data name="EnableKey" xml:space="preserve"><value>Ya da bu anahtarı uygulamaya elle yazın:</value></data>
+  <data name="EnableUri" xml:space="preserve"><value>Ya da uygulamaya bu otpauth adresini verin:</value></data>
+  <data name="EnableStep2" xml:space="preserve"><value>Sonra uygulamanın gösterdiği 6 haneli kodu girin.</value></data>
+
+  <!-- onaylar -->
+  <data name="Ok_ProjectCreated" xml:space="preserve"><value>Proje oluşturuldu.</value></data>
+  <data name="Ok_ProjectSaved" xml:space="preserve"><value>Proje kaydedildi.</value></data>
+  <data name="Ok_ProjectActivated" xml:space="preserve"><value>Proje yeniden aktif.</value></data>
+  <data name="Ok_ProjectDeactivated" xml:space="preserve"><value>Proje pasife alındı. Geçmişi korunur.</value></data>
+  <data name="Err_ProjectInactive" xml:space="preserve"><value>Bu proje pasif.</value></data>
+  <data name="Err_trigger_project_inactive" xml:space="preserve"><value>Bu proje pasif.</value></data>
+  <data name="Ok_TaskAdded" xml:space="preserve"><value>Madde eklendi.</value></data>
+  <data name="Ok_TaskSaved" xml:space="preserve"><value>Madde kaydedildi.</value></data>
+  <data name="Ok_TaskRequeued" xml:space="preserve"><value>Madde kuyruğa geri alındı.</value></data>
+  <data name="Ok_TaskCancelled" xml:space="preserve"><value>Madde iptal edildi.</value></data>
+  <data name="Ok_DecisionAdded" xml:space="preserve"><value>Karar kaydedildi.</value></data>
+  <data name="Ok_DecisionSuperseded" xml:space="preserve"><value>Yerine geçen karar kaydedildi; eski karar "yerine geçildi" oldu.</value></data>
+
+  <!-- hatalar -->
+  <data name="Err_NameRequired" xml:space="preserve"><value>Ad zorunludur.</value></data>
+  <data name="Err_TitleRequired" xml:space="preserve"><value>Başlık zorunludur.</value></data>
+  <data name="Err_UserNameRequired" xml:space="preserve"><value>Kullanıcı adı zorunludur.</value></data>
+  <data name="Err_PasswordMismatch" xml:space="preserve"><value>Parolalar eşleşmiyor.</value></data>
+  <data name="Err_BadCode" xml:space="preserve"><value>Kod geçersiz.</value></data>
+  <data name="Err_BadRecoveryCode" xml:space="preserve"><value>Kurtarma kodu geçersiz.</value></data>
+  <data name="Ok_PasswordChanged" xml:space="preserve"><value>Parola değiştirildi.</value></data>
+  <data name="Ok_TwoFactorDisabled" xml:space="preserve"><value>İki adımlı giriş kapatıldı.</value></data>
+  <data name="Ok_BrowserForgotten" xml:space="preserve"><value>Bu tarayıcıda kod yeniden sorulacak.</value></data>
+  <data name="Ok_AuthenticatorReset" xml:space="preserve"><value>Doğrulama anahtarı sıfırlandı. Uygulamayı yeniden kurun.</value></data>
+  <data name="Identity_PasswordTooShort" xml:space="preserve"><value>Parola en az {0} karakter olmalı.</value></data>
+  <data name="Identity_PasswordMismatch" xml:space="preserve"><value>Mevcut parola yanlış.</value></data>
+  <data name="Identity_ConcurrencyFailure" xml:space="preserve"><value>Hesap bu arada değişti. Tekrar deneyin.</value></data>
+  <data name="Identity_OwnerExists" xml:space="preserve"><value>Sahip hesabı zaten var.</value></data>
+  <data name="Identity_InvalidUserName" xml:space="preserve"><value>Kullanıcı adında yalnızca harfler, rakamlar ve - . _ @ + olabilir (boşluk olmaz).</value></data>
+  <data name="Err_HumanCheck" xml:space="preserve"><value>İnsan doğrulaması başarısız oldu.</value></data>
+  <data name="Err_BadLogin" xml:space="preserve"><value>Kullanıcı adı ya da parola yanlış.</value></data>
+  <data name="Err_SessionRequired" xml:space="preserve"><value>Oturum kimliği zorunludur.</value></data>
+  <data name="Err_NotFound" xml:space="preserve"><value>Böyle bir kayıt yok.</value></data>
+  <data name="Err_LockedByOtherSession" xml:space="preserve"><value>Bu maddeyi bir ajan oturumu tutuyor. Önce kilidini bırakın.</value></data>
+  <data name="Err_AlreadyFinished" xml:space="preserve"><value>Bu madde zaten bitmiş.</value></data>
+  <data name="Err_DependenciesPending" xml:space="preserve"><value>Bitmemiş bağımlılıklar var.</value></data>
+  <data name="Err_InvalidInput" xml:space="preserve"><value>Bazı değerler geçersiz. Başlığı, önceliği ve uzunlukları kontrol edin.</value></data>
+  <data name="Err_InvalidDependency" xml:space="preserve"><value>Seçilen bağımlılık bu projede yok.</value></data>
+  <data name="Err_StatusNotUpdatable" xml:space="preserve"><value>Durum düzenleme ile değiştirilemez.</value></data>
+  <data name="Err_DuplicateTitle" xml:space="preserve"><value>Bu başlıkta bitmemiş bir madde zaten var (#{0}).</value></data>
+  <data name="Err_DependencyCycle" xml:space="preserve"><value>Bu bağımlılıklar maddelerin birbirini beklemesine yol açar.</value></data>
+  <data name="Err_NotRequeueable" xml:space="preserve"><value>Yalnızca yapılıyor ve bloke maddeler kuyruğa geri alınabilir.</value></data>
+  <data name="Err_NotInProgress" xml:space="preserve"><value>Madde yapılıyor durumunda değil.</value></data>
+  <data name="Err_AlreadyBlocked" xml:space="preserve"><value>Madde zaten bloke.</value></data>
+  <data name="Err_AlreadySuperseded" xml:space="preserve"><value>Bu kararın yerine zaten başkası geçmiş.</value></data>
+  <data name="Err_Constraint_Unique" xml:space="preserve"><value>Bu zaten var.</value></data>
+  <data name="Err_Constraint_Check" xml:space="preserve"><value>Bir değer boş ya da çok uzun.</value></data>
+  <data name="Err_Constraint_NotNull" xml:space="preserve"><value>Zorunlu bir değer eksik.</value></data>
+  <data name="Err_Constraint_ForeignKey" xml:space="preserve"><value>Başvurulan kayıt yok.</value></data>
+  <data name="Err_Constraint_Other" xml:space="preserve"><value>Veritabanı değişikliği reddetti.</value></data>
+  <data name="Err_trigger_decision_already_superseded" xml:space="preserve"><value>Bu kararın yerine zaten başkası geçmiş.</value></data>
+  <data name="Err_trigger_dependency_cycle" xml:space="preserve"><value>Bu bağımlılıklar maddelerin birbirini beklemesine yol açar.</value></data>
+  <data name="SkipToContent" xml:space="preserve"><value>İçeriğe geç</value></data>
+  <data name="MainNavigation" xml:space="preserve"><value>Ana menü</value></data>
+  <data name="Breadcrumb" xml:space="preserve"><value>Bulunduğunuz yer</value></data>
+  <data name="Theme" xml:space="preserve"><value>Tema</value></data>
+  <data name="ThemeLight" xml:space="preserve"><value>Açık tema</value></data>
+  <data name="ThemeDark" xml:space="preserve"><value>Koyu tema</value></data>
+  <data name="ThemeSystem" xml:space="preserve"><value>Sistem temasını izle</value></data>
+  <data name="Details" xml:space="preserve"><value>Ayrıntılar</value></data>
+  <data name="Findings" xml:space="preserve"><value>Bulgular</value></data>
+  <data name="ActiveProjects" xml:space="preserve"><value>Aktif projeler</value></data>
+  <data name="AllProjects" xml:space="preserve"><value>Tüm projeler</value></data>
+  <data name="Err_ProjectRequired" xml:space="preserve"><value>Bir proje seçin.</value></data>
+  <data name="Err_TraceNotNumber" xml:space="preserve"><value>Madde ve karar numaraları sayı olmalı.</value></data>
+  <data name="DependenciesNeedProject" xml:space="preserve"><value>Bağımlılık seçmek için önce yukarıdaki filtreden bir proje seçin.</value></data>
+  <data name="NoFindings" xml:space="preserve"><value>Henüz bulgu yok.</value></data>
+  <data name="BodyLength" xml:space="preserve"><value>{0} karakter</value></data>
+  <data name="NewFinding" xml:space="preserve"><value>Yeni bulgu</value></data>
+  <data name="FindingBody" xml:space="preserve"><value>Gövde (markdown)</value></data>
+  <data name="AddFinding" xml:space="preserve"><value>Bulgu ekle</value></data>
+  <data name="DecisionOptional" xml:space="preserve"><value>Karar numarası (isteğe bağlı)</value></data>
+  <data name="DecisionRef" xml:space="preserve"><value>karar #{0}</value></data>
+  <data name="Ok_FindingAdded" xml:space="preserve"><value>Bulgu kaydedildi.</value></data>
+</root>

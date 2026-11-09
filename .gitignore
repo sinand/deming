@@ -1,0 +1,22 @@
+# Local link to the author's Harness tracker; not part of Deming
+.harness
+
+# .NET
+bin/
+obj/
+*.user
+.vs/
+
+# Local data
+*.db
+*.db-shm
+*.db-wal
+
+artifacts/
+TestResults/
+
+# Claude Code local state
+.claude/
+
+# Panel stylesheet: built from src/Deming/Server/Panel/Styles/panel.scss on every build
+src/Deming/Server/Panel/Assets/panel.css

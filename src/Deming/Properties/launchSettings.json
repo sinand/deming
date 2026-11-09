@@ -1,0 +1,18 @@
+{
+  "profiles": {
+    "Deming serve": {
+      "commandName": "Project",
+      "commandLineArgs": "serve",
+      "launchBrowser": true,
+      "launchUrl": "",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://127.0.0.1:5001"
+    },
+    "Deming CLI (help)": {
+      "commandName": "Project",
+      "commandLineArgs": "help"
+    }
+  }
+}

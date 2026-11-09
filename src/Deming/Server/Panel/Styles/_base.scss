@@ -1,0 +1,137 @@
+@use "tokens" as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: $font-ui;
+  font-size: $step-0;
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: $font-display;
+  line-height: 1.25;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: $step-3;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+h2 {
+  font-size: $step-1;
+  font-weight: 620;
+  margin: 0 0 0.75rem;
+}
+
+h3 {
+  font-size: $step-0;
+  font-weight: 620;
+  margin: 1.25rem 0 0.5rem;
+}
+
+p {
+  margin: 0 0 0.75rem;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+
+  &:hover {
+    color: var(--accent-hover);
+  }
+}
+
+small {
+  font-size: $step--1;
+  color: var(--muted);
+}
+
+code,
+.code {
+  font-family: $font-code;
+  font-size: 0.86em;
+}
+
+ul {
+  padding-left: 1.25rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: $radius-s;
+}
+
+// Visible only to screen readers.
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  left: 0.75rem;
+  top: -3rem;
+  z-index: 10;
+  padding: 0.5rem 0.9rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: $radius-s;
+  text-decoration: none;
+
+  &:focus {
+    top: 0.75rem;
+    color: var(--accent-ink);
+  }
+}
+
+svg.icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -1,0 +1,116 @@
+// Design tokens. Every colour the panel uses is a custom property set here, once for light and
+// once for dark. Dark applies when the viewer asked for it (data-theme="dark", the theme cookie) or
+// when the system prefers it and no light override is set.
+//
+// Palette: cool engineering paper with a deep indigo ink (aizome) as the one accent; the sidebar is
+// the indigo itself. Status colours carry meaning only; each status also has its own glyph, so the
+// colour is never the only signal.
+
+$light: (
+  bg: #eef1f4,
+  surface: #ffffff,
+  surface-2: #f6f8fa,
+  ink: #17212c,
+  muted: #55616e,
+  line: #d6dce2,
+  line-strong: #b9c2cc,
+  accent: #2b4c9b,
+  accent-hover: #213c7d,
+  accent-ink: #ffffff,
+  accent-soft: #e5ebf7,
+  focus: #2b4c9b,
+  side-bg: #1b2a4a,
+  side-ink: #c5d0e4,
+  side-muted: #8a99b6,
+  side-hover: #24365c,
+  side-current: #ffffff,
+  side-mark: #f0b44c,
+  shadow: 0 1px 2px rgb(23 33 44 / 6%),
+  shadow-pop: 0 8px 24px rgb(23 33 44 / 16%),
+  st-queued: #55616e,
+  st-progress: #2b4c9b,
+  st-done: #1d7448,
+  st-blocked: #95540a,
+  st-cancelled: #6f7882,
+  ok: #1d7448,
+  warn: #95540a,
+  bad: #b02a22,
+  bad-hover: #8f1f19,
+);
+
+$dark: (
+  bg: #121821,
+  surface: #19212c,
+  surface-2: #1f2834,
+  ink: #e2e7ee,
+  muted: #9ba7b5,
+  line: #2c3745,
+  line-strong: #3d4a5b,
+  accent: #93abef,
+  accent-hover: #b0c2f4,
+  accent-ink: #0f1a33,
+  accent-soft: #233254,
+  focus: #b0c2f4,
+  side-bg: #0d1320,
+  side-ink: #b9c4d8,
+  side-muted: #7d8aa2,
+  side-hover: #18223a,
+  side-current: #ffffff,
+  side-mark: #f0b44c,
+  shadow: 0 1px 2px rgb(0 0 0 / 30%),
+  shadow-pop: 0 10px 28px rgb(0 0 0 / 45%),
+  st-queued: #a3aebb,
+  st-progress: #93abef,
+  st-done: #63c08d,
+  st-blocked: #e6ae55,
+  st-cancelled: #8c96a3,
+  ok: #63c08d,
+  warn: #e6ae55,
+  bad: #f2867c,
+  bad-hover: #f6a69e,
+);
+
+@mixin tokens($map) {
+  @each $name, $value in $map {
+    --#{$name}: #{$value};
+  }
+}
+
+:root {
+  @include tokens($light);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include tokens($dark);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  @include tokens($dark);
+  color-scheme: dark;
+}
+
+// Type and space scale (rem). Body 15px; steps follow a 1.2 ratio.
+$font-ui: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "SF Pro Text", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-display: "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, "SF Pro Display", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-code: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+
+$step--1: 0.8125rem;
+$step-0: 0.9375rem;
+$step-1: 1.125rem;
+$step-2: 1.375rem;
+$step-3: 1.75rem;
+
+$radius-s: 4px;
+$radius: 8px;
+
+$side-width: 15rem;
+$content-max: 76rem;
+
+// Below this width the sidebar folds into a bar on top of the page.
+$bp-side: 52rem;
+// Below this width tables turn into stacked rows.
+$bp-table: 40rem;

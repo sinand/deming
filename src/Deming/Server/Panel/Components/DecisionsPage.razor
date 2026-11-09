@@ -1,0 +1,147 @@
+@page "/decisions"
+@inherits ScopedPage
+
+@if (_notFound)
+{
+    <PageTitle>@L["NotFound"] · Deming</PageTitle>
+    <Shell><p class="notice error" role="alert">@L["Err_NotFound"]</p></Shell>
+    return;
+}
+
+<PageTitle>@L["Decisions"] · Deming</PageTitle>
+<Shell>
+    <header class="page-head">
+        <h1>@L["Decisions"]</h1>
+    </header>
+
+    @if (OkText is { } ok) { <p class="notice ok" role="status">@ok</p> }
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+
+    @if (_selected is { } sel)
+    {
+        <section class="card reading" id="decision">
+            <div class="card-body">
+                <div class="state">
+                    <h2><span class="task-id">#@sel.Id</span>@sel.Title</h2>
+                    <span class="badge @sel.Status">@L["DecisionStatus_" + sel.Status]</span>
+                </div>
+                <p class="prose">@sel.Text</p>
+                <h3>@L["Rationale"]</h3>
+                @if (string.IsNullOrWhiteSpace(sel.Rationale)) { <p class="empty">@L["NoRationale"]</p> }
+                else { <pre class="prose">@sel.Rationale</pre> }
+                <p class="meta">
+                    @if (_selectedProject is not null) { <a href="@Link("/decisions", ("project", sel.ProjectId.ToString()))">@_selectedProject</a> }
+                    <span>@Stamp(sel.CreatedAt)</span>
+                    @if (sel.SessionId is not null) { <span class="session">@sel.SessionId</span> }
+                    @if (sel.TaskId is { } tid) { <a href="/tasks/@tid">@L["TaskRef", tid]</a> }
+                    @if (sel.SupersededById is { } replacement) { <a href="@ViewLink(replacement)">@L["SupersededBy", replacement]</a> }
+                </p>
+
+                @if (sel.Status == DecisionStatus.Active)
+                {
+                    <details class="supersede" open="@_supersedeRefused">
+                        <summary>@L["Supersede"]</summary>
+                        <p><small>@L["SupersedeHint"]</small></p>
+                        <form method="post" class="stack" @formname="supersede" @onsubmit="OnPostAsync">
+                            <AntiforgeryToken />
+                            <input type="hidden" name="op" value="supersede" />
+                            <input type="hidden" name="id" value="@sel.Id" />
+                            <label>@L["Title"] <input name="title" value="@(_title ?? sel.Title)" required /></label>
+                            <label>@L["DecisionText"] <textarea name="text" rows="4" required maxlength="@NoteLimits.DecisionTextMax">@(_text ?? sel.Text)</textarea></label>
+                            <label>@L["Rationale"] <textarea name="rationale" rows="6">@(_rationale ?? sel.Rationale)</textarea></label>
+                            <p><button>@L["SupersedeButton"]</button></p>
+                        </form>
+                    </details>
+                }
+            </div>
+        </section>
+    }
+
+    <div class="split">
+        <section class="card card-flush" aria-label="@L["Decisions"]">
+            <form method="get" class="toolbar">
+                <label>@L["Project"] <ProjectSelect Name="project" Projects="Projects" Value="@ProjectValue" Filter="true" /></label>
+                <label>
+                    @L["Status"]
+                    <select name="status">
+                        <option value="">@L["AllStatuses"]</option>
+                        <option value="@DecisionStatus.Active" selected="@(Status == DecisionStatus.Active)">@L["DecisionStatus_active"]</option>
+                        <option value="@DecisionStatus.Superseded" selected="@(Status == DecisionStatus.Superseded)">@L["DecisionStatus_superseded"]</option>
+                    </select>
+                </label>
+                <button class="secondary">@L["Filter"]</button>
+                @if (Status is not null || ProjectValue != "") { <a href="/decisions">@L["ClearFilter"]</a> }
+            </form>
+
+            @if (_items.Count == 0)
+            {
+                <div class="empty-state">
+                    <Icon Name="empty" />
+                    <p>@L["NoDecisions"]</p>
+                </div>
+            }
+            else
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>@L["Title"]</th>
+                            @if (Selected is null) { <th>@L["Project"]</th> }
+                            <th>@L["Status"]</th>
+                            <th>@L["Created"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in _items)
+                        {
+                            <tr class="@(d.Id == View ? "selected" : null) @(d.ProjectIsActive ? null : "inactive")">
+                                <td class="num">@d.Id</td>
+                                <td class="title">
+                                    <a href="@ViewLink(d.Id)">@d.Title</a>
+                                    <div class="text">@d.Text</div>
+                                </td>
+                                @if (Selected is null)
+                                {
+                                    <td><a href="@Link("/decisions", ("project", d.ProjectId.ToString()))">@d.ProjectName</a></td>
+                                }
+                                <td>
+                                    <span class="badge @d.Status">@L["DecisionStatus_" + d.Status]</span>
+                                    @if (d.SupersededById is { } by) { <div><small><a href="@ViewLink(by)">@L["SupersededBy", by]</a></small></div> }
+                                </td>
+                                <td class="date"><small>@Stamp(d.CreatedAt)</small></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </section>
+
+        @if (Selected is null || Selected.IsActive)
+        {
+            <section class="card">
+                <h2>@L["NewDecision"]</h2>
+                <div class="card-body">
+                    <form method="post" class="stack" @formname="add" @onsubmit="OnPostAsync">
+                        <AntiforgeryToken />
+                        <input type="hidden" name="op" value="add" />
+                        @if (Selected is { } fixedProject)
+                        {
+                            <input type="hidden" name="projectId" value="@fixedProject.Id" />
+                            <p class="meta"><span>@L["Project"]:</span> <strong>@fixedProject.Name</strong></p>
+                        }
+                        else
+                        {
+                            <label>@L["Project"] <ProjectSelect Name="projectId" Projects="Projects" Value="@(_formProject?.ToString() ?? "")" /></label>
+                        }
+                        <label>@L["Title"] <input name="title" value="@(_selected is null ? _title : null)" required /></label>
+                        <label>@L["DecisionText"] <textarea name="text" rows="4" required maxlength="@NoteLimits.DecisionTextMax">@(_selected is null ? _text : null)</textarea></label>
+                        <label>@L["Rationale"] <textarea name="rationale" rows="5">@(_selected is null ? _rationale : null)</textarea></label>
+                        <label>@L["TaskOptional"] <input name="taskId" inputmode="numeric" pattern="[0-9]*" /></label>
+                        <p><button>@L["AddDecision"]</button></p>
+                    </form>
+                </div>
+            </section>
+        }
+    </div>
+</Shell>

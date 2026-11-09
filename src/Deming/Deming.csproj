@@ -1,0 +1,112 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <AssemblyName>deming</AssemblyName>
+    <RootNamespace>Deming</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <!--
+      No static web assets: the panel is rendered on the server and ships its one stylesheet as an
+      embedded resource, so Blazor's wwwroot/_framework scripts and the *.staticwebassets.endpoints.json
+      manifest must not land next to the single-file binary.
+    -->
+    <StaticWebAssetsEnabled>false</StaticWebAssetsEnabled>
+    <!-- Not hosted under IIS: no web.config next to the binary. -->
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
+    <!-- Release targets. Publish with: dotnet publish src/Deming -c Release -r <rid> -->
+    <RuntimeIdentifiers>win-x64;linux-x64;osx-arm64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <!-- Applies only when a runtime identifier is given (publish), so plain build/run stay framework-dependent. -->
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' != ''">
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>embedded</DebugType>
+    <!-- ASP.NET Core Identity and Blazor Server are not trim-safe. -->
+    <PublishTrimmed>false</PublishTrimmed>
+  </PropertyGroup>
+
+  <!-- dotnet tool package (framework-dependent; needs the .NET 10 SDK/runtime). Pack with: dotnet pack src/Deming -c Release -->
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>deming</ToolCommandName>
+    <PackageId>Deming</PackageId>
+    <Description>Task queue, locks, dependencies, handoff notes and decisions for AI coding agents.</Description>
+    <PackageTags>ai;agents;claude-code;agents-md;task-queue;cli</PackageTags>
+    <PackageProjectUrl>https://github.com/sinand/deming</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <!-- Shown on nuget.org and shipped in every package, next to the license notices. -->
+  <ItemGroup>
+    <None Include="..\..\README.md;..\..\LICENSE;..\..\NOTICE;..\..\THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Deming.Tests" />
+  </ItemGroup>
+
+  <!--
+    SQL lives in the binary. Two kinds of embedded files, see Data/README.md:
+      Data/Schema/NNNN_name.sql   -> resource "schema/NNNN_name.sql"  (applied once, in order)
+      Data/Sql/<Area>/<Op>.sql    -> resource "sql/<Area>\<Op>.sql"   (called by name "<Area>.<Op>")
+  -->
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Schema\*.sql" LogicalName="schema/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="Data\Sql\**\*.sql" LogicalName="sql/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <!--
+    Agent instructions shipped in the binary: 'deming install claude' writes the Claude Code commands,
+    'deming install agents' the AGENTS.md block.
+  -->
+  <ItemGroup>
+    <EmbeddedResource Include="Agent\claude\deming-*.md" LogicalName="agent/claude/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="Agent\agents-block.md" LogicalName="agent/agents-block.md" />
+  </ItemGroup>
+
+  <!--
+    Panel assets live in the binary too (no wwwroot, no static web asset manifest next to the file):
+    panel.css is served by Server/Panel/PanelHost.cs from this resource. The panel renders on the
+    server (static SSR, plain form posts), so it needs no blazor.web.js either.
+  -->
+  <ItemGroup>
+    <EmbeddedResource Include="Server\Panel\Assets\panel.css" LogicalName="panel/panel.css" />
+  </ItemGroup>
+
+  <!--
+    panel.css is a build output (gitignored): Server/Panel/Styles/panel.scss compiled by Dart Sass
+    from AspNetCore.SassCompiler, configured in sasscompiler.json (compressed, no source map).
+    The package is a build tool only: build assets, private, no watcher, nothing in the binary or
+    the tool package. The package runs its compile before "Build", i.e. after the assembly is
+    linked; DemingCompilePanelCss pulls it in front of PrepareForBuild so a clean clone embeds a
+    fresh panel.css on the very first build.
+  -->
+  <PropertyGroup>
+    <SassCompilerEnableWatcher>false</SassCompilerEnableWatcher>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.SassCompiler" Version="1.107.1" PrivateAssets="all" IncludeAssets="build" />
+    <Content Remove="sasscompiler.json" />
+    <None Include="sasscompiler.json" Pack="false" />
+  </ItemGroup>
+
+  <Target Name="DemingCompilePanelCss" BeforeTargets="PrepareForBuild" DependsOnTargets="Compile Sass">
+    <!-- The package adds its output as Content (meant for wwwroot); here it is only an embedded resource. -->
+    <ItemGroup>
+      <Content Remove="@(CompiledCssFiles)" />
+    </ItemGroup>
+    <Error Condition="!Exists('Server\Panel\Assets\panel.css')" Text="Server/Panel/Assets/panel.css was not produced from Server/Panel/Styles/panel.scss." />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Markdig" Version="0.44.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.14" />
+  </ItemGroup>
+
+</Project>

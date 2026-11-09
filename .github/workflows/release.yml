@@ -1,0 +1,173 @@
+name: Release
+
+# Runs when a tag like v0.1.0 is pushed. Builds the three single-file binaries,
+# attaches them to a GitHub Release and publishes the dotnet tool to NuGet.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - run: dotnet build Deming.slnx -c Release
+      - run: dotnet test Deming.slnx -c Release --no-build
+
+  binaries:
+    needs: test
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - rid: win-x64
+            os: windows-latest
+            archive: zip
+          - rid: linux-x64
+            os: ubuntu-latest
+            archive: tar.gz
+          - rid: osx-arm64
+            os: macos-latest
+            archive: tar.gz
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Publish single file
+        shell: bash
+        run: dotnet publish src/Deming -c Release -r ${{ matrix.rid }} -p:Version=${GITHUB_REF_NAME#v} -o out/${{ matrix.rid }}
+      - name: Smoke test (help and embedded agent instructions)
+        shell: bash
+        env:
+          DEMING_CONFIG: ${{ runner.temp }}/deming-config.json
+        run: |
+          bin=$PWD/out/${{ matrix.rid }}/deming
+          if [ "${{ matrix.rid }}" = "win-x64" ]; then bin=$bin.exe; fi
+          "$bin" help
+          "$bin" install claude --dir "${{ runner.temp }}/claude-commands"
+          test -f "${{ runner.temp }}/claude-commands/deming-next.md"
+          git init -q "${{ runner.temp }}/agents-repo"
+          (cd "${{ runner.temp }}/agents-repo" && "$bin" install agents)
+          grep -q "<!-- deming:begin -->" "${{ runner.temp }}/agents-repo/AGENTS.md"
+      # deming serve generates its own certificate; the CLI must reach it with no trust step.
+      - name: Smoke test (serve with its own certificate, CLI by fingerprint)
+        shell: bash
+        env:
+          DEMING_CONFIG: ${{ runner.temp }}/serve/config.json
+          DEMING_URL: https://127.0.0.1:5099
+        run: |
+          bin=out/${{ matrix.rid }}/deming
+          if [ "${{ matrix.rid }}" = "win-x64" ]; then bin=$bin.exe; fi
+          data="${{ runner.temp }}/serve/data"
+          log="${{ runner.temp }}/serve.log"
+          "$bin" serve --urls=https://127.0.0.1:5099 "--Deming:DatabasePath=$data/deming.db" > "$log" 2>&1 &
+          pid=$!
+          ok=
+          for i in $(seq 1 30); do
+            # /health, trusting only the certificate serve generated (never -k).
+            if curl -fsS --cacert "$data/deming-https.crt" "$DEMING_URL/health"; then ok=1; break; fi
+            sleep 1
+          done
+          # The CLI: no trust step, only the fingerprint serve wrote to DEMING_CONFIG.
+          if [ -n "$ok" ] && ! "$bin" projects; then ok=; fi
+          kill "$pid" || true
+          cat "$log"
+          test -n "$ok"
+          test -f "$data/deming-https.pfx"
+          grep -q certificateSha256 "$DEMING_CONFIG"
+      - name: Archive
+        shell: bash
+        run: |
+          name=deming-${GITHUB_REF_NAME}-${{ matrix.rid }}
+          mkdir -p dist
+          # The archive carries the license notices beside the binary.
+          cp LICENSE NOTICE THIRD-PARTY-NOTICES.md out/${{ matrix.rid }}/
+          if [ "${{ matrix.archive }}" = "zip" ]; then
+            (cd out/${{ matrix.rid }} && 7z a -tzip "$GITHUB_WORKSPACE/dist/$name.zip" deming.exe LICENSE NOTICE THIRD-PARTY-NOTICES.md)
+          else
+            tar -C out/${{ matrix.rid }} -czf "dist/$name.tar.gz" deming LICENSE NOTICE THIRD-PARTY-NOTICES.md
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.rid }}
+          path: dist/*
+          if-no-files-found: error
+
+  tool-package:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      # Produces the pointer package (Deming) and the self-contained
+      # per-platform packages (Deming.win-x64, Deming.linux-x64, Deming.osx-arm64).
+      - run: dotnet pack src/Deming -c Release -p:Version=${GITHUB_REF_NAME#v} -o nupkg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nupkg
+          path: nupkg/*.nupkg
+          if-no-files-found: error
+
+  github-release:
+    needs: [binaries, tool-package]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: binary-*
+          path: dist
+          merge-multiple: true
+      - name: Checksums
+        run: cd dist && sha256sum * > SHA256SUMS
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes ${{ contains(github.ref_name, '-') && '--prerelease' || '' }}
+
+  nuget:
+    needs: [github-release]
+    runs-on: ubuntu-latest
+    environment: nuget
+    permissions:
+      id-token: write # GitHub OIDC token for nuget.org Trusted Publishing; no stored API key
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: nupkg
+          path: nupkg
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      # Trusted Publishing: exchanges the job's OIDC token for an API key that lives one hour.
+      # Requested right before the push so it cannot expire while earlier jobs run.
+      - name: NuGet login (OIDC, temporary API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }} # nuget.org profile name, not the e-mail address
+      # Platform packages first, the pointer package last, so it never refers to a missing package.
+      - name: Push to NuGet
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: |
+          for f in nupkg/Deming.[a-z]*-*.nupkg; do
+            dotnet nuget push "$f" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          done
+          dotnet nuget push nupkg/Deming.[0-9]*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate

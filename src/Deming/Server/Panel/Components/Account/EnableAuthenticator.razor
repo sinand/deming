@@ -1,0 +1,43 @@
+@page "/account/2fa/enable"
+@inherits AccountPage
+
+<PageTitle>@L["SetUpAuthenticator"] · Deming</PageTitle>
+<Shell Narrow="true">
+    <header class="page-head">
+        <nav class="crumbs" aria-label="@L["Breadcrumb"]"><a href="/account">@L["Account"]</a></nav>
+        <h1>@L["SetUpAuthenticator"]</h1>
+    </header>
+    @if (OkText is { } ok) { <p class="notice ok" role="status">@ok</p> }
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+
+    @if (_codes is { } codes)
+    {
+        <p class="notice ok" role="status">@L["TwoFactorStatusOn"]</p>
+        <RecoveryCodeList Codes="codes" />
+    }
+    else if (_key is not null)
+    {
+        <section class="card">
+            <div class="card-body">
+                <ol class="steps">
+                    <li>
+                        <p>@L["EnableStep1"]</p>
+                        <div class="qr" id="authenticator-qr">@((MarkupString)_qr!)</div>
+                        <p>@L["EnableKey"]</p>
+                        <p class="secret" id="authenticator-key">@_key</p>
+                        <p>@L["EnableUri"]</p>
+                        <p class="secret" id="authenticator-uri">@_uri</p>
+                    </li>
+                    <li>
+                        <p>@L["EnableStep2"]</p>
+                        <form method="post" class="stack" @formname="verify" @onsubmit="OnPostAsync">
+                            <AntiforgeryToken />
+                            <label>@L["AuthenticatorCode"] <input class="otp" name="code" autocomplete="one-time-code" inputmode="numeric" maxlength="7" required /></label>
+                            <p><button>@L["Verify"]</button></p>
+                        </form>
+                    </li>
+                </ol>
+            </div>
+        </section>
+    }
+</Shell>

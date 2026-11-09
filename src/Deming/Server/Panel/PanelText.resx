@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- navigation and shared -->
+  <data name="Projects" xml:space="preserve"><value>Projects</value></data>
+  <data name="Tasks" xml:space="preserve"><value>Tasks</value></data>
+  <data name="Decisions" xml:space="preserve"><value>Decisions</value></data>
+  <data name="Language" xml:space="preserve"><value>Language</value></data>
+  <data name="SignOut" xml:space="preserve"><value>Sign out</value></data>
+  <data name="NotFound" xml:space="preserve"><value>Not found</value></data>
+  <data name="Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Description" xml:space="preserve"><value>Description</value></data>
+  <data name="Created" xml:space="preserve"><value>Created</value></data>
+  <data name="Create" xml:space="preserve"><value>Create</value></data>
+  <data name="Title" xml:space="preserve"><value>Title</value></data>
+  <data name="Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Priority" xml:space="preserve"><value>Priority</value></data>
+  <data name="Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Scope" xml:space="preserve"><value>Scope</value></data>
+  <data name="Reason" xml:space="preserve"><value>Reason</value></data>
+  <data name="Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Search" xml:space="preserve"><value>Search</value></data>
+  <data name="Filter" xml:space="preserve"><value>Filter</value></data>
+  <data name="ClearFilter" xml:space="preserve"><value>Clear filter</value></data>
+  <data name="AllStatuses" xml:space="preserve"><value>All statuses</value></data>
+  <data name="StatusFilter_eligible" xml:space="preserve"><value>Ready to take (parallel)</value></data>
+
+  <!-- projects -->
+  <data name="NoProjects" xml:space="preserve"><value>No projects yet. Create the first one below, or with the CLI.</value></data>
+  <data name="NewProject" xml:space="preserve"><value>New project</value></data>
+  <data name="Project" xml:space="preserve"><value>Project</value></data>
+  <data name="RepoPath" xml:space="preserve"><value>Repo path</value></data>
+  <data name="RepoPathHint" xml:space="preserve"><value>Where the repository lives. Informational; the project is still identified by its name in the .deming file.</value></data>
+  <data name="ProjectState" xml:space="preserve"><value>Status</value></data>
+  <data name="Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Inactive" xml:space="preserve"><value>Inactive</value></data>
+  <data name="ActiveCheck" xml:space="preserve"><value>Active (an inactive project hands out no tasks and takes no new ones)</value></data>
+  <data name="ProjectTasksCount" xml:space="preserve"><value>{0} / {1} done</value></data>
+  <data name="ProjectQueuedCount" xml:space="preserve"><value>{0} queued</value></data>
+  <data name="WorkColumn" xml:space="preserve"><value>Work</value></data>
+  <data name="Id" xml:space="preserve"><value>ID</value></data>
+  <data name="AddProject" xml:space="preserve"><value>Add project</value></data>
+  <data name="EditProject" xml:space="preserve"><value>Edit project</value></data>
+  <data name="ProjectTasksOf" xml:space="preserve"><value>Tasks of {0}</value></data>
+  <data name="ProjectEditOf" xml:space="preserve"><value>Edit {0}</value></data>
+  <data name="ProjectDeactivate" xml:space="preserve"><value>Make {0} inactive</value></data>
+  <data name="ProjectActivate" xml:space="preserve"><value>Make {0} active</value></data>
+  <data name="SortBy" xml:space="preserve"><value>Sort by {0}</value></data>
+  <data name="BackToProjects" xml:space="preserve"><value>Back to projects</value></data>
+
+  <!-- tasks -->
+  <data name="NoTasks" xml:space="preserve"><value>No tasks match.</value></data>
+  <data name="WaitingFor" xml:space="preserve"><value>Waiting for</value></data>
+  <data name="LockOwner" xml:space="preserve"><value>Lock owner</value></data>
+  <data name="LockExpired" xml:space="preserve"><value>expired</value></data>
+  <data name="LockedAt" xml:space="preserve"><value>since {0}</value></data>
+  <data name="Requeue" xml:space="preserve"><value>Requeue</value></data>
+  <data name="ReleaseLock" xml:space="preserve"><value>Release lock</value></data>
+  <data name="CancelTask" xml:space="preserve"><value>Cancel task</value></data>
+  <data name="NewTask" xml:space="preserve"><value>New task</value></data>
+  <data name="AddTask" xml:space="preserve"><value>Add task</value></data>
+  <data name="DependsOn" xml:space="preserve"><value>Waits for</value></data>
+  <data name="Started" xml:space="preserve"><value>Started</value></data>
+  <data name="Finished" xml:space="preserve"><value>Finished</value></data>
+  <data name="AddedBy" xml:space="preserve"><value>Added by session</value></data>
+  <data name="BlockedReason" xml:space="preserve"><value>Blocked because</value></data>
+  <data name="CancelledReason" xml:space="preserve"><value>Cancelled because</value></data>
+  <data name="NoScope" xml:space="preserve"><value>No scope written.</value></data>
+  <data name="Dependencies" xml:space="preserve"><value>Dependencies</value></data>
+  <data name="NoDependencies" xml:space="preserve"><value>Waits for nothing.</value></data>
+  <data name="FinishedReadOnly" xml:space="preserve"><value>This task is finished; it can no longer be edited.</value></data>
+  <data name="EditTask" xml:space="preserve"><value>Edit task</value></data>
+  <data name="NoOtherTasks" xml:space="preserve"><value>There are no other tasks in this project.</value></data>
+  <data name="Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="NoManualStart" xml:space="preserve"><value>A task cannot be moved to in progress here: an agent session takes it with next or take.</value></data>
+  <data name="Notes" xml:space="preserve"><value>Notes</value></data>
+  <data name="NoNotes" xml:space="preserve"><value>No notes yet.</value></data>
+  <data name="Caveats" xml:space="preserve"><value>Caveats</value></data>
+  <data name="TouchedFiles" xml:space="preserve"><value>Touched files</value></data>
+  <data name="TakenOverFrom" xml:space="preserve"><value>Closed by takeover from session {0}.</value></data>
+  <data name="Kind_handoff" xml:space="preserve"><value>Handoff note</value></data>
+  <data name="Kind_note" xml:space="preserve"><value>Note</value></data>
+  <data name="Status_queued" xml:space="preserve"><value>Queued</value></data>
+  <data name="Status_in_progress" xml:space="preserve"><value>In progress</value></data>
+  <data name="Status_done" xml:space="preserve"><value>Done</value></data>
+  <data name="Status_blocked" xml:space="preserve"><value>Blocked</value></data>
+  <data name="Status_cancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Priority_1" xml:space="preserve"><value>High</value></data>
+  <data name="Priority_2" xml:space="preserve"><value>Normal</value></data>
+  <data name="Priority_3" xml:space="preserve"><value>Low</value></data>
+  <data name="Source_human" xml:space="preserve"><value>Human</value></data>
+  <data name="Source_agent" xml:space="preserve"><value>Agent</value></data>
+
+  <!-- decisions -->
+  <data name="NoDecisions" xml:space="preserve"><value>No decisions recorded.</value></data>
+  <data name="DecisionStatus_active" xml:space="preserve"><value>Active</value></data>
+  <data name="DecisionStatus_superseded" xml:space="preserve"><value>Superseded</value></data>
+  <data name="SupersededBy" xml:space="preserve"><value>superseded by #{0}</value></data>
+  <data name="Rationale" xml:space="preserve"><value>Rationale</value></data>
+  <data name="NoRationale" xml:space="preserve"><value>No rationale written.</value></data>
+  <data name="TaskRef" xml:space="preserve"><value>task #{0}</value></data>
+  <data name="Supersede" xml:space="preserve"><value>Correct or replace</value></data>
+  <data name="SupersedeHint" xml:space="preserve"><value>A decision is never edited or deleted. Writing the corrected version records a new decision and marks this one superseded.</value></data>
+  <data name="SupersedeButton" xml:space="preserve"><value>Record replacement</value></data>
+  <data name="DecisionText" xml:space="preserve"><value>Decision</value></data>
+  <data name="NewDecision" xml:space="preserve"><value>New decision</value></data>
+  <data name="TaskOptional" xml:space="preserve"><value>Task number (optional)</value></data>
+  <data name="AddDecision" xml:space="preserve"><value>Record decision</value></data>
+
+  <!-- sign in and registration -->
+  <data name="SignIn" xml:space="preserve"><value>Sign in</value></data>
+  <data name="CreateOwner" xml:space="preserve"><value>Create the owner account</value></data>
+  <data name="CreateAccount" xml:space="preserve"><value>Create account</value></data>
+  <data name="UserName" xml:space="preserve"><value>User name</value></data>
+  <data name="Password" xml:space="preserve"><value>Password</value></data>
+  <data name="RepeatPassword" xml:space="preserve"><value>Repeat password</value></data>
+  <data name="RememberMe" xml:space="preserve"><value>Keep me signed in</value></data>
+  <data name="PasswordHint" xml:space="preserve"><value>At least {0} characters.</value></data>
+  <data name="TwoFactorTitle" xml:space="preserve"><value>Two-step sign-in</value></data>
+  <data name="TwoFactorPrompt" xml:space="preserve"><value>Enter the 6-digit code from your authenticator app.</value></data>
+  <data name="AuthenticatorCode" xml:space="preserve"><value>Authenticator code</value></data>
+  <data name="RememberMachine" xml:space="preserve"><value>Don't ask again on this browser</value></data>
+  <data name="Verify" xml:space="preserve"><value>Verify</value></data>
+  <data name="UseRecoveryCode" xml:space="preserve"><value>No access to the app? Sign in with a recovery code.</value></data>
+  <data name="RecoveryTitle" xml:space="preserve"><value>Sign in with a recovery code</value></data>
+  <data name="RecoveryPrompt" xml:space="preserve"><value>Each recovery code works once.</value></data>
+  <data name="RecoveryCode" xml:space="preserve"><value>Recovery code</value></data>
+  <data name="LockoutTitle" xml:space="preserve"><value>Account locked</value></data>
+  <data name="LockoutText" xml:space="preserve"><value>Too many failed attempts. The account is locked for {0} minutes; try again later.</value></data>
+  <data name="BackToSignIn" xml:space="preserve"><value>Back to sign-in</value></data>
+
+  <!-- account -->
+  <data name="Account" xml:space="preserve"><value>Account</value></data>
+  <data name="SignedInAs" xml:space="preserve"><value>Signed in as {0}.</value></data>
+  <data name="ChangePassword" xml:space="preserve"><value>Change password</value></data>
+  <data name="CurrentPassword" xml:space="preserve"><value>Current password</value></data>
+  <data name="NewPassword" xml:space="preserve"><value>New password</value></data>
+  <data name="TwoFactorStatusOn" xml:space="preserve"><value>Two-step sign-in is on.</value></data>
+  <data name="TwoFactorStatusOff" xml:space="preserve"><value>Two-step sign-in is off.</value></data>
+  <data name="ManageTwoFactor" xml:space="preserve"><value>Manage two-step sign-in</value></data>
+  <data name="SetUpAuthenticator" xml:space="preserve"><value>Set up an authenticator app</value></data>
+  <data name="RecoveryCodesLeft" xml:space="preserve"><value>Recovery codes left: {0}.</value></data>
+  <data name="RecoveryCodesLow" xml:space="preserve"><value>Few recovery codes are left. Generate new ones.</value></data>
+  <data name="RecoveryCodesTitle" xml:space="preserve"><value>Recovery codes</value></data>
+  <data name="RecoveryCodesSave" xml:space="preserve"><value>Keep these codes somewhere safe. Each one signs you in once without the app; they are not shown again.</value></data>
+  <data name="GenerateCodes" xml:space="preserve"><value>Generate new recovery codes</value></data>
+  <data name="GenerateCodesHint" xml:space="preserve"><value>The old codes stop working.</value></data>
+  <data name="ForgetBrowser" xml:space="preserve"><value>Ask for the code on this browser again</value></data>
+  <data name="DisableTwoFactor" xml:space="preserve"><value>Turn off two-step sign-in</value></data>
+  <data name="DisableTwoFactorHint" xml:space="preserve"><value>Sign-in will ask only for the password.</value></data>
+  <data name="ResetAuthenticator" xml:space="preserve"><value>Reset the authenticator key</value></data>
+  <data name="ResetAuthenticatorHint" xml:space="preserve"><value>The entry in your app stops working and two-step sign-in turns off until you set it up again.</value></data>
+  <data name="EnableStep1" xml:space="preserve"><value>Add Deming to an authenticator app (for example Microsoft Authenticator, Google Authenticator or 1Password). Scan this QR code with the app:</value></data>
+  <data name="EnableQrLabel" xml:space="preserve"><value>QR code for the authenticator app</value></data>
+  <data name="EnableKey" xml:space="preserve"><value>Or type this key into the app by hand:</value></data>
+  <data name="EnableUri" xml:space="preserve"><value>Or give the app this otpauth address:</value></data>
+  <data name="EnableStep2" xml:space="preserve"><value>Then enter the 6-digit code the app shows.</value></data>
+
+  <!-- confirmations -->
+  <data name="Ok_ProjectCreated" xml:space="preserve"><value>Project created.</value></data>
+  <data name="Ok_ProjectSaved" xml:space="preserve"><value>Project saved.</value></data>
+  <data name="Ok_ProjectActivated" xml:space="preserve"><value>Project is active again.</value></data>
+  <data name="Ok_ProjectDeactivated" xml:space="preserve"><value>Project made inactive. Its history is kept.</value></data>
+  <data name="Err_ProjectInactive" xml:space="preserve"><value>This project is inactive.</value></data>
+  <data name="Err_trigger_project_inactive" xml:space="preserve"><value>This project is inactive.</value></data>
+  <data name="Ok_TaskAdded" xml:space="preserve"><value>Task added.</value></data>
+  <data name="Ok_TaskSaved" xml:space="preserve"><value>Task saved.</value></data>
+  <data name="Ok_TaskRequeued" xml:space="preserve"><value>Task is back in the queue.</value></data>
+  <data name="Ok_TaskCancelled" xml:space="preserve"><value>Task cancelled.</value></data>
+  <data name="Ok_DecisionAdded" xml:space="preserve"><value>Decision recorded.</value></data>
+  <data name="Ok_DecisionSuperseded" xml:space="preserve"><value>Replacement recorded; the old decision is superseded.</value></data>
+
+  <!-- errors -->
+  <data name="Err_NameRequired" xml:space="preserve"><value>A name is required.</value></data>
+  <data name="Err_TitleRequired" xml:space="preserve"><value>A title is required.</value></data>
+  <data name="Err_UserNameRequired" xml:space="preserve"><value>A user name is required.</value></data>
+  <data name="Err_PasswordMismatch" xml:space="preserve"><value>The passwords do not match.</value></data>
+  <data name="Err_BadCode" xml:space="preserve"><value>The code is not valid.</value></data>
+  <data name="Err_BadRecoveryCode" xml:space="preserve"><value>The recovery code is not valid.</value></data>
+  <data name="Ok_PasswordChanged" xml:space="preserve"><value>Password changed.</value></data>
+  <data name="Ok_TwoFactorDisabled" xml:space="preserve"><value>Two-step sign-in turned off.</value></data>
+  <data name="Ok_BrowserForgotten" xml:space="preserve"><value>This browser will be asked for the code again.</value></data>
+  <data name="Ok_AuthenticatorReset" xml:space="preserve"><value>The authenticator key was reset. Set up the app again.</value></data>
+  <data name="Identity_PasswordTooShort" xml:space="preserve"><value>The password must be at least {0} characters.</value></data>
+  <data name="Identity_PasswordMismatch" xml:space="preserve"><value>The current password is wrong.</value></data>
+  <data name="Identity_ConcurrencyFailure" xml:space="preserve"><value>The account was changed meanwhile. Try again.</value></data>
+  <data name="Identity_OwnerExists" xml:space="preserve"><value>The owner account already exists.</value></data>
+  <data name="Identity_InvalidUserName" xml:space="preserve"><value>The user name may contain only letters, digits and - . _ @ + (no spaces).</value></data>
+  <data name="Err_HumanCheck" xml:space="preserve"><value>The human check failed.</value></data>
+  <data name="Err_BadLogin" xml:space="preserve"><value>Wrong user name or password.</value></data>
+  <data name="Err_SessionRequired" xml:space="preserve"><value>A session id is required.</value></data>
+  <data name="Err_NotFound" xml:space="preserve"><value>This item does not exist.</value></data>
+  <data name="Err_LockedByOtherSession" xml:space="preserve"><value>An agent session holds this task. Release its lock first.</value></data>
+  <data name="Err_AlreadyFinished" xml:space="preserve"><value>This task is already finished.</value></data>
+  <data name="Err_DependenciesPending" xml:space="preserve"><value>Unfinished dependencies are still pending.</value></data>
+  <data name="Err_InvalidInput" xml:space="preserve"><value>Some of the values are not valid. Check the title, priority and lengths.</value></data>
+  <data name="Err_InvalidDependency" xml:space="preserve"><value>A chosen dependency does not exist in this project.</value></data>
+  <data name="Err_StatusNotUpdatable" xml:space="preserve"><value>The status cannot be changed by editing.</value></data>
+  <data name="Err_DuplicateTitle" xml:space="preserve"><value>An unfinished task with this title already exists (#{0}).</value></data>
+  <data name="Err_DependencyCycle" xml:space="preserve"><value>These dependencies would make tasks wait for each other.</value></data>
+  <data name="Err_NotRequeueable" xml:space="preserve"><value>Only in-progress and blocked tasks can be requeued.</value></data>
+  <data name="Err_NotInProgress" xml:space="preserve"><value>The task is not in progress.</value></data>
+  <data name="Err_AlreadyBlocked" xml:space="preserve"><value>The task is already blocked.</value></data>
+  <data name="Err_AlreadySuperseded" xml:space="preserve"><value>This decision has already been superseded.</value></data>
+  <data name="Err_Constraint_Unique" xml:space="preserve"><value>That already exists.</value></data>
+  <data name="Err_Constraint_Check" xml:space="preserve"><value>A value is empty or too long.</value></data>
+  <data name="Err_Constraint_NotNull" xml:space="preserve"><value>A required value is missing.</value></data>
+  <data name="Err_Constraint_ForeignKey" xml:space="preserve"><value>A referenced item does not exist.</value></data>
+  <data name="Err_Constraint_Other" xml:space="preserve"><value>The database refused the change.</value></data>
+  <data name="Err_trigger_decision_already_superseded" xml:space="preserve"><value>This decision has already been superseded.</value></data>
+  <data name="Err_trigger_dependency_cycle" xml:space="preserve"><value>These dependencies would make tasks wait for each other.</value></data>
+  <data name="SkipToContent" xml:space="preserve"><value>Skip to content</value></data>
+  <data name="MainNavigation" xml:space="preserve"><value>Main menu</value></data>
+  <data name="Breadcrumb" xml:space="preserve"><value>You are here</value></data>
+  <data name="Theme" xml:space="preserve"><value>Theme</value></data>
+  <data name="ThemeLight" xml:space="preserve"><value>Light theme</value></data>
+  <data name="ThemeDark" xml:space="preserve"><value>Dark theme</value></data>
+  <data name="ThemeSystem" xml:space="preserve"><value>Follow the system theme</value></data>
+  <data name="Details" xml:space="preserve"><value>Details</value></data>
+  <data name="Findings" xml:space="preserve"><value>Findings</value></data>
+  <data name="ActiveProjects" xml:space="preserve"><value>Active projects</value></data>
+  <data name="AllProjects" xml:space="preserve"><value>All projects</value></data>
+  <data name="Err_ProjectRequired" xml:space="preserve"><value>Choose a project.</value></data>
+  <data name="Err_TraceNotNumber" xml:space="preserve"><value>The task and decision numbers must be numbers.</value></data>
+  <data name="DependenciesNeedProject" xml:space="preserve"><value>To pick dependencies, choose a project in the filter above first.</value></data>
+  <data name="NoFindings" xml:space="preserve"><value>No findings yet.</value></data>
+  <data name="BodyLength" xml:space="preserve"><value>{0} characters</value></data>
+  <data name="NewFinding" xml:space="preserve"><value>New finding</value></data>
+  <data name="FindingBody" xml:space="preserve"><value>Body (markdown)</value></data>
+  <data name="AddFinding" xml:space="preserve"><value>Add finding</value></data>
+  <data name="DecisionOptional" xml:space="preserve"><value>Decision number (optional)</value></data>
+  <data name="DecisionRef" xml:space="preserve"><value>decision #{0}</value></data>
+  <data name="Ok_FindingAdded" xml:space="preserve"><value>Finding recorded.</value></data>
+</root>

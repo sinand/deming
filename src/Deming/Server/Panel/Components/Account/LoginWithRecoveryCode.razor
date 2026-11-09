@@ -1,0 +1,15 @@
+@page "/login/recovery"
+@inherits AccountPage
+
+<PageTitle>@L["RecoveryTitle"] · Deming</PageTitle>
+<Shell SignedIn="false" Narrow="true">
+    <h1>@L["RecoveryTitle"]</h1>
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+    <p>@L["RecoveryPrompt"]</p>
+
+    <form method="post" class="stack" @formname="recovery" @onsubmit="OnPostAsync">
+        <AntiforgeryToken />
+        <label>@L["RecoveryCode"] <input name="code" autocomplete="off" required autofocus /></label>
+        <p><button>@L["SignIn"]</button></p>
+    </form>
+</Shell>

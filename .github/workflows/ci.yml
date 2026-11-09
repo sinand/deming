@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: No user data files tracked
+        shell: bash
+        run: |
+          found=$(git ls-files | grep -E '(^|/)(export\.json|config\.json)$|\.db(-wal|-shm)?$' || true)
+          if [ -n "$found" ]; then
+            echo "User data files must not be tracked:"
+            echo "$found"
+            exit 1
+          fi
+      - run: dotnet build Deming.slnx -c Release
+      - run: dotnet test Deming.slnx -c Release --no-build

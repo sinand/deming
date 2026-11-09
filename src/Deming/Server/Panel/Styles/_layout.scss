@@ -1,0 +1,257 @@
+@use "tokens" as *;
+
+// ------------------------------------------------------------------ signed-in frame
+// Sidebar on the left (brand + main navigation), a thin top bar over the content (preferences,
+// who is signed in, sign out). Below $bp-side the sidebar becomes a bar on top.
+
+.app {
+  display: grid;
+  grid-template-columns: $side-width minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.side {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.25rem 0.75rem;
+  background: var(--side-bg);
+  color: var(--side-ink);
+  overflow-y: auto;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-family: $font-display;
+  font-size: $step-1;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--side-current);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--side-current);
+  }
+
+  // A short rule under the wordmark: the one warm colour in the panel.
+  &::after {
+    content: "";
+    width: 0.9rem;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--side-mark);
+  }
+}
+
+.side-nav {
+  display: grid;
+  gap: 2px;
+
+  a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: $radius-s;
+    color: var(--side-ink);
+    text-decoration: none;
+
+    &:hover {
+      background: var(--side-hover);
+      color: var(--side-current);
+    }
+
+    &[aria-current] {
+      background: var(--side-hover);
+      color: var(--side-current);
+      font-weight: 600;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: -0.75rem;
+        top: 0.4rem;
+        bottom: 0.4rem;
+        width: 3px;
+        border-radius: 0 2px 2px 0;
+        background: var(--side-mark);
+      }
+    }
+
+    &:focus-visible {
+      outline-color: var(--side-current);
+    }
+  }
+}
+
+.side-label {
+  margin: 0 0 0.35rem;
+  padding: 0 0.75rem;
+  font-size: $step--1;
+  color: var(--side-muted);
+}
+
+.frame {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  min-height: 3.25rem;
+  padding: 0.5rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.who {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted);
+  font-size: $step--1;
+
+  strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+}
+
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: $step--1;
+  text-transform: uppercase;
+}
+
+.content {
+  width: 100%;
+  max-width: $content-max;
+  padding: 1.75rem 2rem 4rem;
+
+  &.narrow {
+    max-width: 42rem;
+  }
+}
+
+@media (max-width: $bp-side) {
+  .app {
+    display: block;
+  }
+
+  .side {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    overflow-x: auto;
+  }
+
+  .side-label {
+    display: none;
+  }
+
+  .side-nav {
+    display: flex;
+    gap: 0.25rem;
+
+    a[aria-current]::before {
+      left: 0.75rem;
+      right: 0.75rem;
+      top: auto;
+      bottom: -0.15rem;
+      width: auto;
+      height: 3px;
+      border-radius: 2px;
+    }
+  }
+
+  .topbar {
+    padding: 0.5rem 1rem;
+  }
+
+  .content {
+    padding: 1.25rem 1rem 3rem;
+  }
+}
+
+// ------------------------------------------------------------------ sign-in pages
+// A centred column: wordmark, one card with the form, the preferences underneath.
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  min-height: 100vh;
+  padding: 12vh 1rem 3rem;
+
+  .brand {
+    color: var(--ink);
+    font-size: $step-2;
+
+    &:hover {
+      color: var(--ink);
+    }
+  }
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 25rem;
+  padding: 1.75rem 1.75rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  border-radius: $radius;
+  box-shadow: var(--shadow);
+
+  h1 {
+    font-size: $step-2;
+    margin-bottom: 1rem;
+  }
+
+  form.stack {
+    max-width: none;
+  }
+
+  button:not(.link) {
+    width: 100%;
+  }
+}
+
+.auth-foot {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+@media (max-width: $bp-side) {
+  .auth {
+    padding-top: 2rem;
+  }
+
+  .auth-card {
+    padding: 1.25rem 1.1rem 1rem;
+  }
+}

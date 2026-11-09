@@ -1,0 +1,165 @@
+@page "/tasks"
+@inherits ScopedPage
+
+@if (_notFound)
+{
+    <PageTitle>@L["NotFound"] · Deming</PageTitle>
+    <Shell><p class="notice error" role="alert">@L["Err_NotFound"]</p></Shell>
+    return;
+}
+
+<PageTitle>@L["Tasks"] · Deming</PageTitle>
+<Shell>
+    <header class="page-head">
+        <h1>@L["Tasks"]</h1>
+    </header>
+
+    @if (OkText is { } ok) { <p class="notice ok" role="status">@ok</p> }
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+
+    <section class="card card-flush" aria-label="@L["Tasks"]">
+        <form method="get" class="toolbar">
+            <label>@L["Project"] <ProjectSelect Name="project" Projects="Projects" Value="@ProjectValue" Filter="true" /></label>
+            <label>@L["Search"] <input type="search" name="q" value="@Q" /></label>
+            <label>
+                @L["Status"]
+                <select name="status">
+                    <option value="">@L["AllStatuses"]</option>
+                    @foreach (var s in TaskItemStatus.All)
+                    {
+                        <option value="@s" selected="@(s == Status)">@StatusLabel(s)</option>
+                    }
+                    <option value="@EligibleFilter" selected="@(Status == EligibleFilter)">@L["StatusFilter_eligible"]</option>
+                </select>
+            </label>
+            <button class="secondary">@L["Filter"]</button>
+            @if (Q is not null || Status is not null || ProjectValue != "") { <a href="/tasks">@L["ClearFilter"]</a> }
+        </form>
+
+        @if (_shown.Count == 0)
+        {
+            <div class="empty-state">
+                <Icon Name="empty" />
+                <p>@L["NoTasks"]</p>
+            </div>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>@L["Title"]</th>
+                        @if (Selected is null) { <th>@L["Project"]</th> }
+                        <th>@L["Status"]</th>
+                        <th>@L["Priority"]</th>
+                        <th>@L["Source"]</th>
+                        <th>@L["WaitingFor"]</th>
+                        <th>@L["LockOwner"]</th>
+                        <th><span class="sr-only">@L["Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in _shown)
+                    {
+                        <tr class="@(t.ProjectIsActive ? null : "inactive")">
+                            <td class="num">@t.Id</td>
+                            <td class="title"><a href="/tasks/@t.Id">@t.Title</a></td>
+                            @if (Selected is null)
+                            {
+                                <td><a href="@Link("/tasks", ("project", t.ProjectId.ToString()))">@t.ProjectName</a></td>
+                            }
+                            <td><span class="badge @t.Status">@StatusLabel(t.Status)</span></td>
+                            <td><Prio Priority="t.Priority" Label="@PriorityLabel(t.Priority)" /></td>
+                            <td>@L["Source_" + t.Source]</td>
+                            <td>@if (t.OpenDependencyCount > 0) { <span class="count">@t.OpenDependencyCount</span> }</td>
+                            <td>
+                                @if (t.LockOwner is not null)
+                                {
+                                    <span class="session" title="@Stamp(t.LockedAt)">@t.LockOwner</span>
+                                    @if (t.Status == TaskItemStatus.InProgress && LockExpired(t.LockedAt)) { <div><small>@L["LockExpired"]</small></div> }
+                                }
+                            </td>
+                            <td class="actions">
+                                <a href="/tasks/@t.Id">@L["Edit"]</a>
+                                @if (t.Status is TaskItemStatus.InProgress or TaskItemStatus.Blocked)
+                                {
+                                    <form method="post" class="inline" @formname="@("release-" + t.Id)" @onsubmit="OnPostAsync">
+                                        <AntiforgeryToken />
+                                        <input type="hidden" name="op" value="release" />
+                                        <input type="hidden" name="id" value="@t.Id" />
+                                        <button class="link">@(t.Status == TaskItemStatus.Blocked ? L["Requeue"] : L["ReleaseLock"])</button>
+                                    </form>
+                                }
+                                @if (t.Status is not (TaskItemStatus.Done or TaskItemStatus.Cancelled))
+                                {
+                                    <details class="pop">
+                                        <summary>@L["Cancel"]</summary>
+                                        <form method="post" class="stack" @formname="@("cancel-" + t.Id)" @onsubmit="OnPostAsync">
+                                            <AntiforgeryToken />
+                                            <input type="hidden" name="op" value="cancel" />
+                                            <input type="hidden" name="id" value="@t.Id" />
+                                            <label>@L["Reason"] <input name="reason" required maxlength="@NoteLimits.SummaryMax" /></label>
+                                            <p><button class="danger small">@L["CancelTask"]</button></p>
+                                        </form>
+                                    </details>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+
+    @if (Selected is null || Selected.IsActive)
+    {
+        <section class="card">
+            <h2>@L["NewTask"]</h2>
+            <div class="card-body">
+                <form method="post" class="stack" @formname="add" @onsubmit="OnPostAsync">
+                    <AntiforgeryToken />
+                    <input type="hidden" name="op" value="add" />
+                    @if (Selected is { } fixedProject)
+                    {
+                        <input type="hidden" name="projectId" value="@fixedProject.Id" />
+                        <p class="meta"><span>@L["Project"]:</span> <strong>@fixedProject.Name</strong></p>
+                    }
+                    else
+                    {
+                        <label>@L["Project"] <ProjectSelect Name="projectId" Projects="Projects" Value="@(_formProject?.ToString() ?? "")" /></label>
+                    }
+                    <label>@L["Title"] <input name="title" value="@_title" required /></label>
+                    <label>@L["Scope"] <textarea name="scope" rows="5">@_scope</textarea></label>
+                    <label>
+                        @L["Priority"]
+                        <select name="priority">
+                            @foreach (var p in new[] { TaskPriority.High, TaskPriority.Default, TaskPriority.Low })
+                            {
+                                <option value="@p" selected="@(p == _priority)">@PriorityLabel(p)</option>
+                            }
+                        </select>
+                    </label>
+                    @if (Selected is null)
+                    {
+                        <p><small>@L["DependenciesNeedProject"]</small></p>
+                    }
+                    else if (_open.Count > 0)
+                    {
+                        <fieldset>
+                            <legend>@L["DependsOn"]</legend>
+                            @foreach (var t in _open)
+                            {
+                                <label class="check">
+                                    <input type="checkbox" name="dependsOn" value="@t.Id" checked="@_dependsOn.Contains(t.Id)" />
+                                    <span>#@t.Id @t.Title</span> <span class="badge @t.Status">@StatusLabel(t.Status)</span>
+                                </label>
+                            }
+                        </fieldset>
+                    }
+                    <p><button>@L["AddTask"]</button></p>
+                </form>
+            </div>
+        </section>
+    }
+</Shell>

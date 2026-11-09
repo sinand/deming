@@ -1,0 +1,18 @@
+@page "/login"
+@inherits AccountPage
+
+<PageTitle>@L["SignIn"] · Deming</PageTitle>
+<Shell SignedIn="false" Narrow="true">
+    <h1>@L["SignIn"]</h1>
+    @if (OkText is { } ok) { <p class="notice ok" role="status">@ok</p> }
+    @if (Error is { } error) { <p class="notice error" role="alert">@error</p> }
+
+    <form method="post" class="stack" @formname="login" @onsubmit="OnPostAsync">
+        <AntiforgeryToken />
+        <label>@L["UserName"] <input name="username" autocomplete="username" value="@_userName" required /></label>
+        <label>@L["Password"] <input name="password" type="password" autocomplete="current-password" required /></label>
+        <label class="check"><input type="checkbox" name="rememberMe" value="true" checked="@_rememberMe" /> @L["RememberMe"]</label>
+        <TurnstileWidget />
+        <p><button>@L["SignIn"]</button></p>
+    </form>
+</Shell>
