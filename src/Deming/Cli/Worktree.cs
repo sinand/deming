@@ -339,10 +339,10 @@ internal static class Worktree
     /// while the current directory may be a logical one (macOS: /var is a link to /private/var), and the two
     /// must compare equal.
     /// </summary>
-    private static string Physical(string fullPath)
+    private static string Physical(string fullPath, int depth = 0)
     {
         var root = Path.GetPathRoot(fullPath);
-        if (string.IsNullOrEmpty(root))
+        if (string.IsNullOrEmpty(root) || depth > 16)
             return fullPath;
 
         var current = root;
@@ -354,7 +354,7 @@ internal static class Worktree
             {
                 var info = new DirectoryInfo(current);
                 if (info.Exists && info.LinkTarget is not null && info.ResolveLinkTarget(returnFinalTarget: true) is { } target)
-                    current = target.FullName;
+                    current = Physical(target.FullName, depth + 1); // the target itself may go through a link
             }
             catch (IOException)
             {
