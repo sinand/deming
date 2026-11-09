@@ -332,7 +332,40 @@ internal static class Worktree
     private static StringComparison PathComparison =>
         OperatingSystem.IsWindows() || OperatingSystem.IsMacOS() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 
-    private static string Normal(string path) => Path.TrimEndingDirectorySeparator(Path.GetFullPath(path));
+    private static string Normal(string path) => Path.TrimEndingDirectorySeparator(Physical(Path.GetFullPath(path)));
+
+    /// <summary>
+    /// The path with every symbolic link on the way resolved, as far as it exists. git reports physical paths
+    /// while the current directory may be a logical one (macOS: /var is a link to /private/var), and the two
+    /// must compare equal.
+    /// </summary>
+    private static string Physical(string fullPath)
+    {
+        var root = Path.GetPathRoot(fullPath);
+        if (string.IsNullOrEmpty(root))
+            return fullPath;
+
+        var current = root;
+        foreach (var part in fullPath[root.Length..].Split(
+                     [Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar], StringSplitOptions.RemoveEmptyEntries))
+        {
+            current = Path.Combine(current, part);
+            try
+            {
+                var info = new DirectoryInfo(current);
+                if (info.Exists && info.LinkTarget is not null && info.ResolveLinkTarget(returnFinalTarget: true) is { } target)
+                    current = target.FullName;
+            }
+            catch (IOException)
+            {
+                // Not resolvable (a broken link, no access): keep the logical path.
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
+        }
+        return current;
+    }
 
     public static bool SamePath(string a, string b) => string.Equals(Normal(a), Normal(b), PathComparison);
 

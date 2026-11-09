@@ -370,4 +370,30 @@ public sealed class WorktreeTests : IDisposable
         Assert.True(File.Exists(Path.Combine(TreeOf(14), "draft.txt")));
         Assert.True(Git(Repo, "rev-parse", "--verify", "--quiet", "refs/heads/task-14").Ok);
     }
+
+    [Fact]
+    public void A_path_through_a_symbolic_link_is_the_same_as_its_target()
+    {
+        // git reports physical paths, the shell's current directory may be a logical one
+        // (macOS: /var is a link to /private/var). Both must name the same worktree.
+        Assert.SkipWhen(OperatingSystem.IsWindows(), "Creating a symbolic link needs a privilege on Windows.");
+
+        var root = Path.Combine(Path.GetTempPath(), "deming-link-" + Guid.NewGuid().ToString("N"));
+        var real = Path.Combine(root, "real");
+        var link = Path.Combine(root, "link");
+        Directory.CreateDirectory(Path.Combine(real, "repo"));
+        try
+        {
+            Directory.CreateSymbolicLink(link, real);
+
+            Assert.True(Worktree.SamePath(Path.Combine(link, "repo"), Path.Combine(real, "repo")));
+            Assert.False(Worktree.SamePath(Path.Combine(link, "repo"), real));
+        }
+        finally
+        {
+            if (Directory.Exists(link))
+                Directory.Delete(link);
+            Directory.Delete(root, recursive: true);
+        }
+    }
 }
