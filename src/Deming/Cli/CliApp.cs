@@ -5,8 +5,8 @@ namespace Deming.Cli;
 /// <summary>Entry point for the CLI role: talks to a running "deming serve" over HTTP (docs/scope.md § 5).</summary>
 public static class CliApp
 {
-    public static int Run(string[] args, TextWriter stdout, TextWriter stderr) =>
-        RunAsync(args, new CliContext { Out = stdout, Err = stderr, In = Console.In }).GetAwaiter().GetResult();
+    public static int Run(string[] args, TextWriter stdout, TextWriter stderr, TextReader? stdin = null) =>
+        RunAsync(args, new CliContext { Out = stdout, Err = stderr, In = stdin ?? Console.In }).GetAwaiter().GetResult();
 
     public static async Task<int> RunAsync(string[] args, CliContext ctx)
     {

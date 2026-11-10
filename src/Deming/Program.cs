@@ -16,4 +16,6 @@ if (args.Length > 0 && args[0] == "serve")
     }
 }
 
-return CliApp.Run(args, Console.Out, Console.Error);
+// UTF-8 on all three streams, whatever the console's code page is (see ConsoleStreams).
+using var console = ConsoleStreams.Utf8Console();
+return CliApp.Run(args, ConsoleStreams.Out(), ConsoleStreams.Err(), ConsoleStreams.In());
