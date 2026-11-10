@@ -33,6 +33,7 @@ sertifikası dahil kendi kendine yeterlidir.
    sürümünüzdeki `libicuNN` paketi).
    .NET SDK zaten kuruluysa `dotnet tool install --global Deming` de olur; SDK
    yalnızca bu komut için gerekir, Deming'i çalıştırmak için değil.
+   Yalnızca sürüm adayları varken (`0.1.0-rc.1`) komuta `--prerelease` ekleyin.
 
 2. **HTTPS: kurulacak bir şey yok.** Deming localhost'ta bile yalnızca HTTPS
    sunar, kendi sertifikasıyla. İlk `deming serve` (sonraki adım) sertifikayı

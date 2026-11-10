@@ -35,6 +35,7 @@ HTTPS certificate included.
    `libicu-dev` or the `libicuNN` package your release ships).
    If you already have the .NET SDK, `dotnet tool install --global Deming`
    works too; the SDK is needed only for that command, not to run Deming.
+   While only release candidates exist (`0.1.0-rc.1`), add `--prerelease`.
 
 2. **HTTPS: nothing to set up.** Deming serves HTTPS only, even on localhost,
    with a certificate of its own. The first `deming serve` (next step)
