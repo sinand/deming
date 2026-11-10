@@ -26,6 +26,9 @@ sertifikası dahil kendi kendine yeterlidir.
    arşivi indirin: `deming-v<sürüm>-win-x64.zip`,
    `deming-v<sürüm>-linux-x64.tar.gz` ya da `deming-v<sürüm>-osx-arm64.tar.gz`
    (sağlama toplamları `SHA256SUMS` içinde). Açın ve `deming`'i `PATH` üzerine koyun.
+   İkililer kod imzalı değildir. macOS'ta indirilen `deming` karantinaya alınır:
+   `xattr -d com.apple.quarantine deming` ile kaldırın. Windows'ta SmartScreen ilk
+   çalıştırmada uyarabilir: "Ek bilgi", sonra "Yine de çalıştır".
    Linux'ta sistemin `libicu` paketi gerekir (Debian/Ubuntu'da `libicu-dev` ya da
    sürümünüzdeki `libicuNN` paketi).
    .NET SDK zaten kuruluysa `dotnet tool install --global Deming` de olur; SDK

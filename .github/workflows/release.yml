@@ -2,10 +2,14 @@ name: Release
 
 # Runs when a tag like v0.1.0 is pushed. Builds the three single-file binaries,
 # attaches them to a GitHub Release and publishes the dotnet tool to NuGet.
+#
+# Run by hand (Actions > Release > Run workflow) it is a rehearsal: tests, the three binaries with
+# their smoke tests and the packages, as version 0.0.0-dev. Nothing is released or pushed to NuGet.
 
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -48,7 +52,9 @@ jobs:
           global-json-file: global.json
       - name: Publish single file
         shell: bash
-        run: dotnet publish src/Deming -c Release -r ${{ matrix.rid }} -p:Version=${GITHUB_REF_NAME#v} -o out/${{ matrix.rid }}
+        run: |
+          v=${GITHUB_REF_NAME#v}; case "$GITHUB_REF" in refs/tags/v*) ;; *) v=0.0.0-dev ;; esac
+          dotnet publish src/Deming -c Release -r ${{ matrix.rid }} -p:Version=$v -o out/${{ matrix.rid }}
       - name: Smoke test (help and embedded agent instructions)
         shell: bash
         env:
@@ -116,7 +122,10 @@ jobs:
           global-json-file: global.json
       # Produces the pointer package (Deming) and the self-contained
       # per-platform packages (Deming.win-x64, Deming.linux-x64, Deming.osx-arm64).
-      - run: dotnet pack src/Deming -c Release -p:Version=${GITHUB_REF_NAME#v} -o nupkg
+      - shell: bash
+        run: |
+          v=${GITHUB_REF_NAME#v}; case "$GITHUB_REF" in refs/tags/v*) ;; *) v=0.0.0-dev ;; esac
+          dotnet pack src/Deming -c Release -p:Version=$v -o nupkg
       - uses: actions/upload-artifact@v4
         with:
           name: nupkg
@@ -124,6 +133,7 @@ jobs:
           if-no-files-found: error
 
   github-release:
+    if: startsWith(github.ref, 'refs/tags/v') # a rehearsal releases nothing
     needs: [binaries, tool-package]
     runs-on: ubuntu-latest
     permissions:
@@ -142,6 +152,7 @@ jobs:
         run: gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes ${{ contains(github.ref_name, '-') && '--prerelease' || '' }}
 
   nuget:
+    if: startsWith(github.ref, 'refs/tags/v')
     needs: [github-release]
     runs-on: ubuntu-latest
     environment: nuget

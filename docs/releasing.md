@@ -27,7 +27,9 @@ and push to `main`.
 
 - NuGet: publishing uses Trusted Publishing (GitHub OIDC), no stored API key. On nuget.org, under
   your user name > Trusted Publishing, create a policy: repository owner and repository of this
-  repo, workflow file `release.yml` (file name only), environment `nuget`. The first successful
+  repo, workflow file `release.yml` (file name only), environment `nuget`. Scope: "Push new packages
+  and package versions" (the IDs do not exist before the first release); packages: `Deming` and
+  `Deming.*`, one per line. The first successful
   push creates the package IDs (`PackageId` in `src/Deming/Deming.csproj` plus `Deming.win-x64`
   etc.) under the policy owner. A policy for a private repository is only temporarily active for
   7 days until the first publish; restart the window if it lapses.
@@ -39,8 +41,16 @@ and push to `main`.
 
 ## Cutting a release
 
+Rehearse first: Actions > Release > Run workflow on `main`. That runs the tests, builds and
+smoke-tests the three binaries and packs the tool as version `0.0.0-dev`; it creates no release
+and pushes nothing to NuGet. When it is green:
+
     git tag v0.1.0
     git push origin v0.1.0
+
+If the `nuget` environment has required reviewers, the `nuget` job waits for approval
+(Actions > the run > Review deployments) after the GitHub Release is out. A version pushed to
+nuget.org cannot be deleted, only unlisted.
 
 ## Linux: libicu
 

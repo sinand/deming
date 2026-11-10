@@ -27,6 +27,10 @@ HTTPS certificate included.
    download the archive for your system: `deming-v<version>-win-x64.zip`,
    `deming-v<version>-linux-x64.tar.gz` or `deming-v<version>-osx-arm64.tar.gz`
    (checksums in `SHA256SUMS`). Unpack it and put `deming` on your `PATH`.
+   The binaries are not code-signed. On macOS a downloaded `deming` is
+   quarantined: clear it with `xattr -d com.apple.quarantine deming`. On
+   Windows, SmartScreen may warn on first run: choose "More info", then
+   "Run anyway".
    On Linux the system `libicu` package is required (on Debian/Ubuntu, install
    `libicu-dev` or the `libicuNN` package your release ships).
    If you already have the .NET SDK, `dotnet tool install --global Deming`
