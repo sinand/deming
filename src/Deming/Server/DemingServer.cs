@@ -21,6 +21,9 @@ public static class DemingServer
             // First start: say how to connect an agent; serve itself never writes to an agent's directory.
             Console.Error.WriteLine("Connect your agent: 'deming install claude' (Claude Code commands), or 'deming install agents' at a repository root (AGENTS.md for other agents).");
         }
+        // Every start: which data this server holds, so a start on top of an older database is visible.
+        var db = app.Configuration[DataServiceCollectionExtensions.DatabasePathKey];
+        Console.Error.WriteLine($"Database: {Path.GetFullPath(string.IsNullOrWhiteSpace(db) ? DemingDb.DefaultPath() : db)}");
         await app.RunAsync();
     }
 

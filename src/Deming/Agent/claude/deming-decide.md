@@ -1,7 +1,7 @@
 ---
 description: Record a decision, or replace an earlier one
 argument-hint: <JSON object with title, text, rationale> [--supersede <decision id>]
-allowed-tools: Bash(deming:*)
+allowed-tools: Bash(deming *), PowerShell(deming *)
 ---
 <!-- deming:command -->
 

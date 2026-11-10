@@ -86,7 +86,7 @@ internal static class CliCommands
             [
                 CliField.Text("summary", "required, 800 characters"),
                 CliField.Text("caveats", "800 characters"),
-                CliField.Text("touchedFiles", "1500 characters, a map not a reading list"),
+                CliField.Text("touchedFiles", "one string of at most 1500 characters: the paths and what changed in each, not a reading list"),
                 CliField.Text("commitHash"),
                 CliField.Switch("takeover", "close a task another session holds (works with a JSON argument too)"),
             ], true, async run =>

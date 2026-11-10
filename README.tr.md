@@ -89,8 +89,8 @@ sertifikası dahil kendi kendine yeterlidir.
    ```
 
    Bu, `/deming-next`, `/deming-done`, `/deming-block`, `/deming-cancel`,
-   `/deming-add`, `/deming-decide`, `/deming-decisions`, `/deming-finding` ve
-   `/deming-findings` komutlarını `deming-*.md` dosyaları olarak
+   `/deming-add`, `/deming-decide`, `/deming-decisions`, `/deming-finding`,
+   `/deming-findings` ve `/deming-search` komutlarını `deming-*.md` dosyaları olarak
    `~/.claude/commands` dizinine yazar (`CLAUDE_CONFIG_DIR` tanımlıysa onun
    altındaki `commands`; başka dizin için `--dir`) ve yazdığı her yolu basar.
    Yalnızca kendi yazdığı dosyaları değiştirir ya da siler; oradaki kendi
@@ -261,7 +261,9 @@ commit'ler, `deming merge` çalıştırır ve maddeyi `deming done` ile kapatır
 `pre-push` kancası push etmesini engeller. Korumalı ortamı commit atmaya ya da
 sunucuya ulaşmaya izin vermeyen ajan yalnızca düzenlemeleri yapar; koordine
 eden oturum onun yerine commit'ler, birleştirir ve `deming done --takeover` ile
-kapatır.
+kapatır. Windows'ta Codex'in korumalı ortamı TLS el sıkışmasını keser
+(`No credentials are available in the security package`): `deming`
+komutlarının korumalı ortam dışında çalışmasına onay verin.
 
 ## Güvenlik
 

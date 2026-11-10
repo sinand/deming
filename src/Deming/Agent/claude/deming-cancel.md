@@ -1,7 +1,7 @@
 ---
 description: Cancel a task that will not be done, with the reason
 argument-hint: <task id> <reason>
-allowed-tools: Bash(deming:*)
+allowed-tools: Bash(deming *), PowerShell(deming *)
 ---
 <!-- deming:command -->
 

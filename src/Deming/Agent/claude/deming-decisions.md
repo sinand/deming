@@ -1,7 +1,7 @@
 ---
 description: List the project's decisions, or read one with its rationale
 argument-hint: [decision id]
-allowed-tools: Bash(deming:*)
+allowed-tools: Bash(deming *), PowerShell(deming *)
 ---
 <!-- deming:command -->
 

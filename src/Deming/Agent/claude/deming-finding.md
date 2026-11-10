@@ -1,7 +1,7 @@
 ---
 description: Record a finding (a measurement or observation that is not a decision)
 argument-hint: <JSON object with title, body, taskId, decisionId>
-allowed-tools: Bash(deming:*)
+allowed-tools: Bash(deming *), PowerShell(deming *)
 ---
 <!-- deming:command -->
 

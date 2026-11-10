@@ -67,6 +67,17 @@ public static class CliApp
             ctx.Err.WriteLine(ex.Message);
             return ex.ExitCode;
         }
+        catch (HttpRequestException ex) when (ex.InnerException is System.Security.Authentication.AuthenticationException { InnerException: { } cause })
+        {
+            // The handshake broke before the certificate was judged (the validation callback's refusal has no
+            // inner exception): blaming the fingerprint here would send the user the wrong way.
+            var reasons = new List<string>();
+            for (Exception? e = cause; e is not null; e = e.InnerException)
+                reasons.Add(e.Message);
+            ctx.Err.WriteLine($"The TLS handshake with the server at {run.ServerUrl} failed before its certificate could be checked: {string.Join(" <- ", reasons).TrimEnd('.')}. "
+                + "This is not a trust problem. A sandbox that restricts the process (some agent CLIs run commands in one) can cause it: run the command outside the sandbox.");
+            return ExitCodes.Error;
+        }
         catch (HttpRequestException ex) when (ex.InnerException is System.Security.Authentication.AuthenticationException)
         {
             ctx.Err.WriteLine($"The certificate of the server at {run.ServerUrl} is not trusted: {ex.InnerException!.Message} "

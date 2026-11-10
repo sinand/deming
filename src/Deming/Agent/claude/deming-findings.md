@@ -1,7 +1,7 @@
 ---
 description: List the project's findings, or read one with its body
 argument-hint: [finding id] [--task <id>] [--decision <id>]
-allowed-tools: Bash(deming:*)
+allowed-tools: Bash(deming *), PowerShell(deming *)
 ---
 <!-- deming:command -->
 

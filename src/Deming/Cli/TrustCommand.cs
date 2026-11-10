@@ -65,6 +65,9 @@ internal static class TrustCommand
         else
         {
             ctx.Err.WriteLine($"Adding the Deming certificate to {store.Description}; the system may ask you to confirm.");
+            // The Windows dialog identifies the certificate by its SHA-1 thumbprint only, in groups of eight:
+            // print it the same way, so the number on screen can be compared before answering Yes.
+            ctx.Err.WriteLine($"  Its SHA-1 thumbprint, the number a confirmation dialog shows: {string.Join(' ', certificate.Thumbprint.Chunk(8).Select(c => new string(c)))}");
             try
             {
                 store.Add(certificate, file);

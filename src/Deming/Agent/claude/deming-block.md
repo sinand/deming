@@ -1,7 +1,7 @@
 ---
 description: Park a task you cannot continue, with the reason
 argument-hint: <task id> <reason>
-allowed-tools: Bash(deming:*)
+allowed-tools: Bash(deming *), PowerShell(deming *)
 ---
 <!-- deming:command -->
 

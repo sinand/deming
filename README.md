@@ -89,7 +89,7 @@ HTTPS certificate included.
 
    This writes the commands `/deming-next`, `/deming-done`, `/deming-block`,
    `/deming-cancel`, `/deming-add`, `/deming-decide`, `/deming-decisions`,
-   `/deming-finding` and `/deming-findings` as `deming-*.md` files into
+   `/deming-finding`, `/deming-findings` and `/deming-search` as `deming-*.md` files into
    `~/.claude/commands` (`CLAUDE_CONFIG_DIR/commands` when that is set;
    `--dir` chooses another directory) and prints every path it wrote. It
    only replaces or removes files it wrote itself; a file of your own there is
@@ -259,7 +259,9 @@ channel when it must (`deming message`, `deming wait`), commits in its
 worktree, runs `deming merge` and closes the task with `deming done`. The
 pre-push hook keeps it from pushing. An agent whose sandbox cannot commit or
 reach the server only does the edits; the session that coordinates then
-commits, merges and closes for it with `deming done --takeover`.
+commits, merges and closes for it with `deming done --takeover`. On Windows,
+Codex's sandbox breaks the TLS handshake (`No credentials are available in the
+security package`): approve running the `deming` commands outside the sandbox.
 
 ## Safety
 
