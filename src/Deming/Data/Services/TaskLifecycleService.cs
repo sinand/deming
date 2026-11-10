@@ -10,7 +10,9 @@ public sealed class AddTaskRequest
     public string Title { get; init; } = "";
     public string? Scope { get; init; }
     public int Priority { get; init; } = TaskPriority.Default;
-    public string Source { get; init; } = TaskSource.Agent;
+    /// <summary>'human' or 'agent'. Null: 'agent' when the request carries a session id, 'human' when it carries none
+    /// (someone typing <c>deming add</c> in a terminal).</summary>
+    public string? Source { get; init; }
 
     /// <summary>Tasks this one waits for (ids in the same project).</summary>
     public IReadOnlyList<long> DependsOn { get; init; } = [];
@@ -74,7 +76,8 @@ public sealed class TaskLifecycleService(DemingDb db, TimeProvider time, IOption
         RequireText(request.Title, "Title");
         if (request.Priority is < TaskPriority.High or > TaskPriority.Low)
             throw Invalid("Priority must be 1 (high), 2 (normal) or 3 (low).");
-        if (request.Source is not (TaskSource.Human or TaskSource.Agent))
+        var source = request.Source ?? (string.IsNullOrWhiteSpace(sessionId) ? TaskSource.Human : TaskSource.Agent);
+        if (source is not (TaskSource.Human or TaskSource.Agent))
             throw Invalid("Source must be 'human' or 'agent'.");
 
         return db.InTransactionAsync(async tx =>
@@ -91,7 +94,7 @@ public sealed class TaskLifecycleService(DemingDb db, TimeProvider time, IOption
                 .AddParameter("Title", request.Title)
                 .AddParameter("Scope", request.Scope)
                 .AddParameter("Priority", request.Priority)
-                .AddParameter("Source", request.Source)
+                .AddParameter("Source", source)
                 .AddParameter("AddedBySession", string.IsNullOrWhiteSpace(sessionId) ? null : sessionId)
                 .GetModelAsync<TaskItem>(ct)
                 ?? throw new InvalidOperationException("Task.Insert returned no row.");

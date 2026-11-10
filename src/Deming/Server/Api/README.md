@@ -16,7 +16,7 @@ All routes are under `/api`. `ApiMiddleware` checks the key first, then turns an
 | `GET /api/projects/{pid}/tasks[?status=]` | list rows, never the scope: `sortOrder,id,title,status,priority,source,openDependencyCount,lockOwner,lockedAt` |
 | `GET /api/projects/{pid}/tasks/eligible` | the tasks next could take now (queued, every dependency done or cancelled, project active), same rows as the list, queue order; `[]` when none |
 | `GET /api/tasks/{id}` | `{task, dependencies[], notes[]}` |
-| `POST /api/projects/{pid}/tasks` `{title, scope, priority, source, dependsOn[]}` | 201 task |
+| `POST /api/projects/{pid}/tasks` `{title, scope, priority, source, dependsOn[]}` | 201 task; without `source` it is `agent` when `X-Session-Id` is sent, `human` when it is not |
 | `PATCH /api/tasks/{id}` `{title, scope, priority, dependsOn[]}` | `status` in the body is 400 |
 | `POST /api/tasks/{id}/requeue[?force=true]` | |
 | `POST /api/tasks/{id}/block` · `/cancel` `{reason}` | |

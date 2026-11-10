@@ -69,6 +69,20 @@ public class TaskLifecycleTests
     }
 
     [Fact]
+    public async Task Without_a_source_the_session_id_decides_agent_or_human()
+    {
+        await using var r = await NewRigAsync();
+
+        var typed = await r.Life.AddAsync(1, null, new AddTaskRequest { Title = "Typed in a terminal" }, Ct);
+        var agent = await r.Life.AddAsync(1, "sess", new AddTaskRequest { Title = "Added by a session" }, Ct);
+        var stated = await r.Life.AddAsync(1, null, new AddTaskRequest { Title = "Stated", Source = TaskSource.Agent }, Ct);
+
+        Assert.Equal(TaskSource.Human, typed.Source);
+        Assert.Equal(TaskSource.Agent, agent.Source);
+        Assert.Equal(TaskSource.Agent, stated.Source);
+    }
+
+    [Fact]
     public async Task Add_rejects_a_title_matching_an_unfinished_task_and_returns_its_id()
     {
         await using var r = await NewRigAsync();

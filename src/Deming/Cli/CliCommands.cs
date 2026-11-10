@@ -40,7 +40,7 @@ internal static class CliCommands
                 CliField.Text("title", "required"),
                 CliField.Text("scope", "what to do, in the task's own words"),
                 CliField.Number("priority", "1 (high) to 3 (low), default 2"),
-                CliField.Text("source", "human | agent, default agent"),
+                CliField.Text("source", "human | agent; default: agent with a session id, human without one"),
                 CliField.IdList("dependsOn", "task ids this task waits for, like 3,4"),
             ], false, async run =>
             {
